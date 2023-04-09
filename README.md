@@ -13,9 +13,9 @@ If you have any problem, suggestions or new features, please feel free to submit
 
 - Link: https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/issues
 
-If you don't want to set up by yourself, there is executable version for windows
+If you don't know where to download the files, you can check this file.
 
-- Link: https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/releases/
+- Link: [links.txt](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/blob/main/links.txt)
 
 If you like this project, give me a star or feedback , that is great help for me. **:smile:**
 
