@@ -78,9 +78,12 @@ Note: Don't forget to move your **'save'**, **'config.json'** and **'devices_con
 | Mystery Merchant                                       | <u>**Done**</u> |
 | A simple GUI                                           | **<u>Done</u>** |
 | Allow bot control multi-devices/emulator               | **<u>Done</u>** |
-| Pass verification with haoi API                        | **<u>Done</u>** |
-| Pass verification with 2captcha API                    | **<u>Done</u>** |
+| Pass verification with haoi API                        | **<u>not yet</u>** |
+| Pass verification with 2captcha API                    | **<u>not yet</u>** |
 
+# Can it do captcha?
+
+- Yes, it does, you need to get a paid membership from one of the 9:29 [Videotime](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot#show-case) hapi or 2captcha Sites, you will paste the key you bought from there in the settings section. 9:29 [Videotime](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot#show-case) If you want to support [2captcha.com](https://2captcha.com?from=11847506)
 ### Set Up
 
 - Use following commands to install package into you **python** / **python virtual environment** (version 3.7)
