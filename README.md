@@ -125,3 +125,4 @@ Note: Don't forget to move your **'save'**, **'config.json'** and **'devices_con
 ### Show case
 
 [![](https://markdown-videos.deta.dev/youtube/6IObh_HJvrk)](https://youtu.be/6IObh_HJvrk)
+- [Youtube Shorts](https://www.youtube.com/@yuceltoluyag/shorts) 
