@@ -3,6 +3,7 @@ from bot_related.bot_config import TrainingAndUpgradeLevel, BotConfig
 from bot_related import haoi, twocaptcha
 from config import HAO_I, TWO_CAPTCHA
 from filepath.file_relative_paths import (
+    GuiCheckImagePathAndProps,
     ImagePathAndProps,
     BuffsImageAndProps,
     ItemsImageAndProps,
@@ -17,7 +18,7 @@ import time
 
 
 from filepath.constants import RESOURCES, SPEEDUPS, BOOSTS, EQUIPMENT, OTHER, MAP, HOME
-
+from random import randrange, uniform
 
 class Task:
 
@@ -185,8 +186,11 @@ class Task:
             result = self.gui.get_curr_gui_name()
             gui_name, pos = ["UNKNOW", None] if result is None else result
             if gui_name == GuiName.VERIFICATION_VERIFY.name:
-                self.tap(pos[0], pos[1], 5)
-                pos_list = self.pass_verification()
+                self.check_capcha()
+            elif gui_name == GuiName.VERIFICATION_CHEST.name:
+                self.check_capcha()
+            elif gui_name == GuiName.VERIFICATION_CHEST1.name:
+                self.check_capcha()
             # elif gui_name == GuiName.VERIFICATION_CLOSE_REFRESH_OK.name and pos_list is None:
             #     pos_list = self.pass_verification()
             else:
@@ -198,7 +202,7 @@ class Task:
         pos_list = None
         try:
             self.set_text(insert="pass verification")
-            box = (400, 0, 880, 720)
+            box = (400, 70, 880, 625)
             ok = [780, 680]
             img = self.gui.get_curr_device_screen_img()
             img = img.crop(box)
@@ -212,14 +216,32 @@ class Task:
                 return None
 
             for pos in pos_list:
-                self.tap(400 + pos[0], pos[1], 1)
-            self.tap(780, 680, 5)
+                self.tap(400 + pos[0], pos[1] + 70, 1)
+            self.tap(randrange(700, 800), randrange(565, 605), 5)
 
         except Exception as e:
             self.tap(100, 100)
             traceback.print_exc()
 
         return pos_list
+    
+
+    def check_capcha(self):
+        (found, _, pos) = self.gui.check_any(ImagePathAndProps.VERIFICATION_VERIFY_TITLE_IMAGE_PATH.value)
+        if found:
+            self.tap(pos[0], pos[1] + 258, 1)
+            time.sleep(5)
+            self.pass_verification()
+        (found, _, pos) = self.gui.check_any(ImagePathAndProps.VERIFICATION_VERIFY_BUTTON_IMAGE_PATH.value)
+        if found:
+            self.tap(pos[0], pos[1], 1)
+            time.sleep(5)
+            self.pass_verification()
+        (found, _, pos) = self.gui.check_any(GuiCheckImagePathAndProps.VERIFICATION_CHEST_IMG_PATH.value, GuiCheckImagePathAndProps.VERIFICATION_CHEST1_IMG_PATH.value)
+        if found:
+            self.tap(pos[0], pos[1], 1)
+            time.sleep(5)
+            self.pass_verification()
 
     def has_buff(self, checking_location, buff_img_props):
         # Where to check
