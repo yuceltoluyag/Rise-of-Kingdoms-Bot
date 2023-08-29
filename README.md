@@ -79,7 +79,7 @@ Note: Don't forget to move your **'save'**, **'config.json'** and **'devices_con
 | A simple GUI                                           | **<u>Done</u>** |
 | Allow bot control multi-devices/emulator               | **<u>Done</u>** |
 | Pass verification with haoi API                        | **<u>not yet</u>** |
-| Pass verification with 2captcha API                    | **<u>not yet</u>** |
+| Pass verification with 2captcha API                    | **<u>Done</u>** |
 
 # Can it do captcha?
 
