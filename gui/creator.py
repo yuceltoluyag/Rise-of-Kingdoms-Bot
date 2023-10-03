@@ -183,4 +183,5 @@ def load_device_config():
 def write_device_config(config):
     config_json = json.dumps(config)
     with open(resource_path("devices_config.json"), 'w') as f:
+        f.write("")  # Ghi lại một danh sách rỗng vào tập tin JSON
         f.write(config_json)

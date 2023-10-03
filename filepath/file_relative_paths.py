@@ -721,9 +721,25 @@ class GuiCheckImagePathAndProps(Enum):
         25,
         WINDOW,
     ]
+    VERIFICATION_CHEST_IMG_PATH = [
+        'resource\\verification_chest_button.png',
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.8,
+        25,
+        VERIFICATION_CHEST]
+    VERIFICATION_CHEST1_IMG_PATH = [
+        'resource\\verification_chest_button1.png',
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.8,
+        25,
+        VERIFICATION_CHEST1]
 
 
 GuiCheckImagePathAndPropsOrdered = [
+    GuiCheckImagePathAndProps.VERIFICATION_CHEST_IMG_PATH,
+    GuiCheckImagePathAndProps.VERIFICATION_CHEST1_IMG_PATH,
     # GuiCheckImagePathAndProps.VERIFICATION_CLOSE_REFRESH_OK_BUTTON_IMAGE_PATH,
     GuiCheckImagePathAndProps.VERIFICATION_VERIFY_BUTTON_IMAGE_PATH,
     GuiCheckImagePathAndProps.MAP_BUTTON_IMG_PATH,

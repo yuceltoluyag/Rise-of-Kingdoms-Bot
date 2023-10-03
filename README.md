@@ -5,6 +5,10 @@
 
 # Rise of Kingdom Bot
 
+### **Main source**
+
+- Link: https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot
+
 ### **Introduction**
 
 Rise of Kingdom Bot can do following job: claim quests/vip/gifts, collecting resource, gathering resource, donate techology, train troops and pass verification.
@@ -26,6 +30,7 @@ If you like this project, give me a star or feedback , that is great help for me
 - Enable Sunset Canyon.
 - Enable LOST Canyon.
 - Use Items(Some Features)
+- Find device LDPlayer
 
 Note: Don't forget to move your **'save'**, **'config.json'** and **'devices_config.json'** to new version folder
 
@@ -60,26 +65,27 @@ Note: Don't forget to move your **'save'**, **'config.json'** and **'devices_con
 
 ### Functions
 
-| Name                                                   | Status                                                                                                          |
-| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| Automatically start the game when game is not running  | **<u>Done</u>**                                                                                                 |
-| Automatically locating building                        | **<u>Done</u>**                                                                                                 |
-| Collecting resource, troops, and help alliance         | **<u>Done</u>**                                                                                                 |
-| Produce material                                       | **<u>Done</u>**                                                                                                 |
-| Open free chest in tavern                              | **<u>Done</u>**                                                                                                 |
-| Claim quest and daily objectives                       | **<u>Done</u>**                                                                                                 |
-| Claim VIP chest                                        | **<u>Done</u>**                                                                                                 |
-| Claim Event                                            | not yet                                                                                                         |
-| Collecting allied resource, gifs and donate technology | **<u>Done</u>**                                                                                                 |
-| Upgrade and train troops                               | <u>**Done**</u>                                                                                                 |
-| Attack barbarians                                      | <u>**Done**</u>                                                                                                 |
-| Heal troops                                            | <u>**Done**</u>                                                                                                 |
-| Gather resource                                        | **<u>Done</u>**                                                                                                 |
-| Mystery Merchant                                       | <u>**Done**</u>                                                                                                 |
-| A simple GUI                                           | **<u>Done</u>**                                                                                                 |
-| Allow bot control multi-devices/emulator               | **<u>Done</u>**                                                                                                 |
-| Pass verification with haoi API                        | **<u>not yet</u>**                                                                                              |
-| Pass verification with 2captcha API                    | **<u>[BETA](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/releases/tag/0.0.1-Beta)</u> Please Test : )** |
+| Name                                                   | Status             |
+| ------------------------------------------------------ | ------------------ |
+| Automatically start the game when game is not running  | **<u>Done</u>**    |
+| Automatically locating building                        | **<u>Done</u>**    |
+| Collecting resource, troops, and help alliance         | **<u>Done</u>**    |
+| Produce material                                       | **<u>Done</u>**    |
+| Open free chest in tavern                              | **<u>Done</u>**    |
+| Claim quest and daily objectives                       | **<u>Done</u>**    |
+| Claim VIP chest                                        | **<u>Done</u>**    |
+| Claim Event                                            | not yet            |
+| Collecting allied resource, gifs and donate technology | **<u>Done</u>**    |
+| Upgrade and train troops                               | <u>**Done**</u>    |
+| Attack barbarians                                      | <u>**Done**</u>    |
+| Heal troops                                            | <u>**Done**</u>    |
+| Gather resource                                        | **<u>Done</u>**    |
+| Mystery Merchant                                       | <u>**Done**</u>    |
+| A simple GUI                                           | **<u>Done</u>**    |
+| Allow bot control multi-devices/emulator               | **<u>Done</u>**    |
+| Pass verification with haoi API                        | **<u>not yet</u>** |
+| Pass verification with 2captcha API                    | **<u>Done</u>**    |
+| Find devices                                           | **<u>Done</u>**    |
 
 # Can it do captcha?
 
@@ -111,6 +117,10 @@ Note: Don't forget to move your **'save'**, **'config.json'** and **'devices_con
 - Directory Structure Image:
 
   ![](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/blob/main/docs/structure.png?raw=true)
+
+- New ui:
+
+  ![](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/blob/main/docs/new_ui.png?raw=true)
 
 ### Configurations
 
