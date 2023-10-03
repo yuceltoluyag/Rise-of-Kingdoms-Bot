@@ -1,0 +1,90 @@
+{
+  "city_hall": [
+    650,
+    308
+  ],
+  "barracks": [
+    828,
+    314
+  ],
+  "archery_range": [
+    832,
+    432
+  ],
+  "stable": [
+    774,
+    372
+  ],
+  "siege_workshop": [
+    904,
+    364
+  ],
+  "blacksmith": [
+    558,
+    248
+  ],
+  "tavern": [
+    890,
+    258
+  ],
+  "shop": [
+    614,
+    124
+  ],
+  "alliance_center": [
+    482,
+    412
+  ],
+  "academy": [
+    574,
+    364
+  ],
+  "storehouse": [
+    522,
+    146
+  ],
+  "trading_post": [
+    422,
+    380
+  ],
+  "scout_camp": [
+    672,
+    204
+  ],
+  "courier_station": [
+    578,
+    484
+  ],
+  "builder's_hut": [
+    640,
+    430
+  ],
+  "castle": [
+    752,
+    258
+  ],
+  "hospital": [
+    824,
+    224
+  ],
+  "farm": [
+    364,
+    266
+  ],
+  "lumber_mill": [
+    318,
+    388
+  ],
+  "quarry": [
+    490,
+    528
+  ],
+  "goldmine": [
+    368,
+    338
+  ],
+  "wall": [
+    982,
+    566
+  ]
+}

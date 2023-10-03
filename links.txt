@@ -1,0 +1,11 @@
+Python
+https://www.python.org/
+
+ADB
+https://dl.google.com/android/repository/platform-tools_r29.0.5-windows.zip
+
+Tesseract
+https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v5.2.0.20220712.exe
+
+Gitwindow
+https://git-scm.com/download/win
