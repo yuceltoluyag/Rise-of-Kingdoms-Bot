@@ -25,13 +25,9 @@ body:
     attributes:
       label: What happened?
       description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
+      placeholder: Tell us what you saw! Please don't paste console printouts in this area.
     validations:
       required: true
-  - type: textarea
-    id: bug-summary
-    attributes:
-      label: Summary of bug
   - type: dropdown
     id: package-version
     attributes:
@@ -41,6 +37,8 @@ body:
         - 0.0.1
         - 0.0.1-Beta
         - Git version (Genius User :D)
+    validations:
+      required: true
   - type: input
     id: operating-system
     attributes:
@@ -71,3 +69,5 @@ body:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
+    validations:
+        required: true
