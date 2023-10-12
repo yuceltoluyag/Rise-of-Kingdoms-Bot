@@ -1,6 +1,6 @@
 name: 🚀 Feature Request
 description: Suggest an feature for this project.
-title: "(short issue description)"
+title: "(short feature description)"
 labels: [feature-request, needs-triage]
 body:
   - type: markdown
