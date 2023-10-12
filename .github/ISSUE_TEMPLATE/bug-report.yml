@@ -7,10 +7,13 @@ assignees:
 body:
   - type: markdown
     attributes:
-      value: 
-       Note:
+      value: |
+        #### Note:
         Before reporting a bug, see [Issues](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/issues) to check if an issue already exists for the bug you encountered.
-        Provide details about the bug:
+  - type: markdown
+    attributes:
+      value: |
+        ##  Provide details about the bug:
         * What is the problem?
         * What behavior were you expecting?
         * What happened instead?
