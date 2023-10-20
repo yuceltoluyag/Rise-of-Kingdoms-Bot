@@ -29,7 +29,7 @@ def stop_thread(thread):
 
 
 def resource_path(relative_path):
-    if hasattr(sys, '_MEIPASS'):
+    if hasattr(sys, "_MEIPASS"):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
 
@@ -41,8 +41,12 @@ def build_command(program_path, *args):
 def img_to_string(pil_image):
     # pil_image.save(resource_path("test.png"))
     tess.pytesseract.tesseract_cmd = resource_path(FilePaths.TESSERACT_EXE_PATH.value)
-    result = tess.image_to_string(pil_image, lang='eng', config='--psm 6') \
-        .replace('\t', '').replace('\n', '').replace('\f', '')
+    result = (
+        tess.image_to_string(pil_image, lang="eng", config="--psm 6")
+        .replace("\t", "")
+        .replace("\n", "")
+        .replace("\f", "")
+    )
     return result
 
 
@@ -61,10 +65,9 @@ def bot_print(msg):
 
 def get_last_info():
     try:
-        url = 'https://raw.githubusercontent.com/Dylan-Zheng/Rise-of-Kingdoms-Bot/main/docs/version.json'
+        url = "https://raw.githubusercontent.com/yuceltoluyag/Rise-of-Kingdoms-Bot/main/docs/version.json"
         resp_text = requests.get(url).text
         return json.loads(resp_text)
     except Exception as e:
         traceback.print_exc()
         return {}
-

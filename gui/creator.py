@@ -1,14 +1,27 @@
-from tkinter import Button, BooleanVar, Checkbutton, Label, StringVar, Frame, OptionMenu, Entry
-
+import os
+import traceback
+from tkinter import (
+    Button,
+    BooleanVar,
+    Checkbutton,
+    Label,
+    StringVar,
+    Frame,
+    OptionMenu,
+    Entry,
+)
 from tkinter import TRUE, FALSE, N, W, LEFT
-
 from utils import resource_path
 from bot_related.bot_config import BotConfig
 from filepath.file_relative_paths import FilePaths
 
-import traceback
-
 import json
+
+
+def ensure_save_folder_exists():
+    save_folder_path = resource_path(FilePaths.SAVE_FOLDER_PATH.value)
+    if not os.path.exists(save_folder_path):
+        os.makedirs(save_folder_path)
 
 
 def button(frame, on_click=lambda v: v, **kwargs):
@@ -31,19 +44,13 @@ def checkbox_fn_creator(name, text):
             write_bot_config(app.bot_config, app.device.save_file_prefix)
             on_click(variable.get())
 
-        checkbox = Checkbutton(
-            parent,
-            text=text,
-            variable=variable,
-            command=command
-        )
+        checkbox = Checkbutton(parent, text=text, variable=variable, command=command)
         return checkbox, variable
 
     return title_checkbox
 
 
 def entry_int_fn_creator(name, begin_text, end_text=None):
-
     def entry(app, parent):
         str_value = StringVar()
         str_value.set(str(getattr(app.bot_config, name)))
@@ -54,26 +61,28 @@ def entry_int_fn_creator(name, begin_text, end_text=None):
 
         def creator(attr_name):
             def validate_cmd(value, action_type):
-                if action_type == '1':
+                if action_type == "1":
                     if not value.isdigit():
                         return False
-                    if value[0] == '0':
+                    if value[0] == "0":
                         return False
-                setattr(app.bot_config, attr_name, int(value if value != '' else '1'))
+                setattr(app.bot_config, attr_name, int(value if value != "" else "1"))
                 write_bot_config(app.bot_config, app.device.save_file_prefix)
                 return True
 
             return validate_cmd
 
-        entry.config(width=10, validate='key', validatecommand=(
-            frame.register(creator(name)), '%P', '%d'
-        ))
+        entry.config(
+            width=10,
+            validate="key",
+            validatecommand=(frame.register(creator(name)), "%P", "%d"),
+        )
 
         label.grid(row=0, column=0, sticky=N + W, padx=5)
         entry.grid(row=0, column=1, sticky=N + W, padx=5)
 
         if end_text is not None:
-            Label(frame, text=end_text).grid(row=0, column=2, sticky=N+W, padx=5)
+            Label(frame, text=end_text).grid(row=0, column=2, sticky=N + W, padx=5)
 
         return frame, None
 
@@ -81,14 +90,14 @@ def entry_int_fn_creator(name, begin_text, end_text=None):
 
 
 def train_fn_creator(name, train_attr_name, upgrade_attr_name):
-    lv_training_options = ['1', '2', '3', '4', '5', 'Disabled']
-    lv_upgrade_options = ['1', '2', '3', '4', '5', 'All', 'Disabled']
+    lv_training_options = ["1", "2", "3", "4", "5", "Disabled"]
+    lv_upgrade_options = ["1", "2", "3", "4", "5", "All", "Disabled"]
 
     def num_to_option_value(num):
-        return str(num + 1 if 0 <= num <= 4 else 'All' if num == 5 else 'Disable')
+        return str(num + 1 if 0 <= num <= 4 else "All" if num == 5 else "Disable")
 
     def option_value_to_num(v):
-        return int(v if v != 'All' and v != 'Disabled' else 6 if v == 'All' else 0) - 1
+        return int(v if v != "All" and v != "Disable" else 6 if v == "All" else 0) - 1
 
     def train(app, parent):
         frame = Frame(parent)
@@ -99,28 +108,26 @@ def train_fn_creator(name, train_attr_name, upgrade_attr_name):
             setattr(app.bot_config, upgrade_attr_name, option_value_to_num(v))
             write_bot_config(app.bot_config, app.device.save_file_prefix)
 
-        upgrade_label = Label(frame, text='Upgrade Lv.')
+        upgrade_label = Label(frame, text="Upgrade Lv.")
         upgrade_variable = StringVar()
-        upgrade_variable.set(num_to_option_value(getattr(app.bot_config, upgrade_attr_name)))
+        upgrade_variable.set(
+            num_to_option_value(getattr(app.bot_config, upgrade_attr_name))
+        )
         upgrade_option = OptionMenu(
-            frame,
-            upgrade_variable,
-            *lv_upgrade_options,
-            command=update_command
+            frame, upgrade_variable, *lv_upgrade_options, command=update_command
         )
 
         def train_command(v):
             setattr(app.bot_config, train_attr_name, option_value_to_num(v))
             write_bot_config(app.bot_config, app.device.save_file_prefix)
 
-        train_label = Label(frame, text='Training Lv.')
+        train_label = Label(frame, text="Training Lv.")
         train_variable = StringVar()
-        train_variable.set(num_to_option_value(getattr(app.bot_config, train_attr_name)))
+        train_variable.set(
+            num_to_option_value(getattr(app.bot_config, train_attr_name))
+        )
         train_option = OptionMenu(
-            frame,
-            train_variable,
-            *lv_training_options,
-            command=train_command
+            frame, train_variable, *lv_training_options, command=train_command
         )
 
         name_tag.config(width=8, anchor=N + W, justify=LEFT)
@@ -141,9 +148,19 @@ def train_fn_creator(name, train_attr_name, upgrade_attr_name):
 
 def load_bot_config(prefix):
     try:
-        with open(resource_path(FilePaths.SAVE_FOLDER_PATH.value + '{}_config.json'.format(prefix))) as f:
-            config_dict = json.load(f)
-            config = BotConfig(config_dict)
+        ensure_save_folder_exists()
+        config_file_path = resource_path(
+            FilePaths.SAVE_FOLDER_PATH.value + "{}_config.json".format(prefix)
+        )
+
+        if not os.path.exists(config_file_path):
+            # Dosya yoksa, örnek bir config oluştur
+            config = BotConfig()
+            write_bot_config(config, prefix)
+        else:
+            with open(config_file_path) as f:
+                config_dict = json.load(f)
+                config = BotConfig(config_dict)
     except Exception as e:
         traceback.print_exc()
         config = BotConfig()
@@ -151,15 +168,31 @@ def load_bot_config(prefix):
 
 
 def write_bot_config(config, prefix):
-    with open(resource_path(FilePaths.SAVE_FOLDER_PATH.value + "{}_config.json".format(prefix)), 'w') as f:
+    with open(
+        resource_path(
+            FilePaths.SAVE_FOLDER_PATH.value + "{}_config.json".format(prefix)
+        ),
+        "w",
+    ) as f:
         json.dump(config.__dict__, f, indent=2)
 
 
 def load_building_pos(prefix):
     try:
-        with open(resource_path(FilePaths.SAVE_FOLDER_PATH.value + "{}_building_pos.json".format(prefix)
-                                )) as f:
-            building_pos = json.load(f)
+        ensure_save_folder_exists()
+        building_pos_file_path = resource_path(
+            FilePaths.SAVE_FOLDER_PATH.value + "{}_building_pos.json".format(prefix)
+        )
+
+        if not os.path.exists(building_pos_file_path):
+            # Dosya yoksa, örnek bir building_pos oluştur
+            building_pos = (
+                None  # İlgili yapının ne olduğuna bağlı olarak örnek içeriği düzenleyin
+            )
+            write_building_pos(building_pos, prefix)
+        else:
+            with open(building_pos_file_path) as f:
+                building_pos = json.load(f)
     except Exception as e:
         traceback.print_exc()
         building_pos = None
@@ -167,13 +200,18 @@ def load_building_pos(prefix):
 
 
 def write_building_pos(building_pos, prefix):
-    with open(resource_path(FilePaths.SAVE_FOLDER_PATH.value + "{}_building_pos.json".format(prefix)), 'w') as f:
+    with open(
+        resource_path(
+            FilePaths.SAVE_FOLDER_PATH.value + "{}_building_pos.json".format(prefix)
+        ),
+        "w",
+    ) as f:
         json.dump(building_pos, f, indent=2)
 
 
 def load_device_config():
     try:
-        with open(resource_path('devices_config.json')) as f:
+        with open(resource_path("devices_config.json")) as f:
             config = json.load(f)
     except Exception as e:
         config = []
@@ -182,6 +220,6 @@ def load_device_config():
 
 def write_device_config(config):
     config_json = json.dumps(config)
-    with open(resource_path("devices_config.json"), 'w') as f:
-        f.write("")  # Ghi lại một danh sách rỗng vào tập tin JSON
+    with open(resource_path("devices_config.json"), "w") as f:
+        f.write("")  # JSON dosyasına boş bir liste yaz
         f.write(config_json)

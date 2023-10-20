@@ -11,7 +11,6 @@ import config
 
 
 class MainWindow:
-
     def __init__(self):
         self.adb = adb.bridge
         config.global_config = load_config()
@@ -22,8 +21,8 @@ class MainWindow:
         self.window = Tk()
         self.size = config.global_config.screenSize
 
-        self.window.title('Rise Of Kingdom Bot ({})'.format(version))
-        self.window.geometry('{}x{}'.format(self.size[0], self.size[1]))
+        self.window.title("Rise Of Kingdom Bot ({})".format(version))
+        self.window.geometry("{}x{}".format(self.size[0], self.size[1]))
         self.window.resizable(0, 0)
 
         self.curr_frame = None
@@ -34,16 +33,18 @@ class MainWindow:
 
         main_frame = Frame(self.notebook, width=self.size[0], height=self.size[1])
 
-        dlf = DeviceListFrame(self.notebook, main_frame, width=self.size[0], height=self.size[1])
+        dlf = DeviceListFrame(
+            self.notebook, main_frame, width=self.size[0], height=self.size[1]
+        )
 
         sf = SettingFrame(self.notebook, width=self.size[0], height=self.size[1])
         self.setting_frame = sf
         sf.grid(row=0, column=0, sticky=N + W)
         sf.grid_propagate(False)
 
-        self.notebook.add(dlf, text='Device List')
-        self.notebook.add(main_frame, text='Display Device')
-        self.notebook.add(sf, text='Setting')
+        self.notebook.add(dlf, text="Device List")
+        self.notebook.add(main_frame, text="Display Device")
+        self.notebook.add(sf, text="Setting")
         self.notebook.grid(row=0, column=0, sticky=N + W, pady=(10, 0))
 
         bf = BottomFrame(self.window, width=self.size[0], height=self.size[1])

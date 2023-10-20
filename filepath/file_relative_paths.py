@@ -54,6 +54,8 @@ class ItemsImageAndProps(Enum):
 
 
 class ImagePathAndProps(Enum):
+    CAVE_IMG_PATH = ["resource\\cave.png", (1280, 720), (0, 0, 0, 0), 0.98, 25, HOME]
+    GEM_IMG_PATH = ["resource\\gem.png", (1280, 720), (0, 0, 0, 0), 0.9, 25, GEM_ICO]
     MAP_BUTTON_IMG_PATH = [
         "resource\\map_button.png",
         (1280, 720),
@@ -722,19 +724,21 @@ class GuiCheckImagePathAndProps(Enum):
         WINDOW,
     ]
     VERIFICATION_CHEST_IMG_PATH = [
-        'resource\\verification_chest_button.png',
+        "resource\\verification_chest_button.png",
         (1280, 720),
         (0, 0, 0, 0),
         0.8,
         25,
-        VERIFICATION_CHEST]
+        VERIFICATION_CHEST,
+    ]
     VERIFICATION_CHEST1_IMG_PATH = [
-        'resource\\verification_chest_button1.png',
+        "resource\\verification_chest_button1.png",
         (1280, 720),
         (0, 0, 0, 0),
         0.8,
         25,
-        VERIFICATION_CHEST1]
+        VERIFICATION_CHEST1,
+    ]
 
 
 GuiCheckImagePathAndPropsOrdered = [

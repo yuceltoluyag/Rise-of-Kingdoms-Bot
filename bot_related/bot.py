@@ -22,6 +22,7 @@ from tasks.ClaimQuests import ClaimQuests
 from tasks.ClaimVip import ClaimVip
 from tasks.Collecting import Collecting
 from tasks.GatherResource import GatherResource
+from tasks.GatherGem import GatherGem
 from tasks.LocateBuildings import LocateBuilding
 from tasks.Materials import Materials
 from tasks.Restart import Restart
@@ -72,6 +73,7 @@ class Bot:
         self.claim_vip_task = ClaimVip(self)
         self.collecting_task = Collecting(self)
         self.gather_resource_task = GatherResource(self)
+        self.gather_gem_task = GatherGem(self)
         self.locate_building_task = LocateBuilding(self)
         self.materials_task = Materials(self)
         self.scout_task = Scout(self)
@@ -109,7 +111,6 @@ class Bot:
         return self.screen_shot_task.do_city_screen()
 
     def do_task(self, curr_task=TaskName.COLLECTING):
-
         tasks = [
             [self.mystery_merchant_task, "enableMysteryMerchant"],
             [self.alliance_task, "allianceAction", "allianceDoRound"],
@@ -118,6 +119,7 @@ class Bot:
             [self.claim_vip_task, "enableVipClaimChest", "vipDoRound"],
             [self.collecting_task, "enableCollecting"],
             [self.gather_resource_task, "gatherResource"],
+            [self.gather_gem_task, "gatherGem"],
             [self.materials_task, "enableMaterialProduce", "materialDoRound"],
             [self.scout_task, "enableScout"],
             [self.tavern_task, "enableTavern"],

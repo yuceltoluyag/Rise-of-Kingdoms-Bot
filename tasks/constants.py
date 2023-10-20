@@ -1,38 +1,38 @@
 from enum import Enum
 
-DEFAULT_RESOLUTION = {'height': 720, 'width': 1280}
+DEFAULT_RESOLUTION = {"height": 720, "width": 1280}
 
 
 class BuildingNames(Enum):
-    CITY_HALL = 'city_hall'
-    BARRACKS = 'barracks'
-    ARCHERY_RANGE = 'archery_range'
-    STABLE = 'stable'
-    SIEGE_WORKSHOP = 'siege_workshop'
-    BLACKSMITH = 'blacksmith'
-    TAVERN = 'tavern'
-    SHOP = 'shop'
-    ALLIANCE_CENTER = 'alliance_center'
-    ACADEMY = 'academy'
-    STOREHOUSE = 'storehouse'
-    TRADING_POST = 'trading_post'
-    SCOUT_CAMP = 'scout_camp'
-    COURIER_STATION = 'courier_station'
+    CITY_HALL = "city_hall"
+    BARRACKS = "barracks"
+    ARCHERY_RANGE = "archery_range"
+    STABLE = "stable"
+    SIEGE_WORKSHOP = "siege_workshop"
+    BLACKSMITH = "blacksmith"
+    TAVERN = "tavern"
+    SHOP = "shop"
+    ALLIANCE_CENTER = "alliance_center"
+    ACADEMY = "academy"
+    STOREHOUSE = "storehouse"
+    TRADING_POST = "trading_post"
+    SCOUT_CAMP = "scout_camp"
+    COURIER_STATION = "courier_station"
     BUILDERS_HUT = "builder's_hut"
-    CASTLE = 'castle'
-    HOSPITAL = 'hospital'
-    FARM = 'farm'
-    LUMBER_MILL = 'lumber_mill'
-    QUARRY = 'quarry'
-    GOLDMINE = 'goldmine'
-    WALL = 'wall'
+    CASTLE = "castle"
+    HOSPITAL = "hospital"
+    FARM = "farm"
+    LUMBER_MILL = "lumber_mill"
+    QUARRY = "quarry"
+    GOLDMINE = "goldmine"
+    WALL = "wall"
 
 
 class TrainingType(Enum):
-    UPGRADE = 'upgrade'
-    UPGRADE_AND_TRAIN = 'upgrade_and_train'
-    TRAIN = 'train'
-    NO_ACTION = 'no_action'
+    UPGRADE = "upgrade"
+    UPGRADE_AND_TRAIN = "upgrade_and_train"
+    TRAIN = "train"
+    NO_ACTION = "no_action"
 
 
 class TaskName(Enum):
@@ -59,3 +59,4 @@ class Resource(Enum):
     WOOD = 1
     STONE = 2
     GOLD = 3
+    GEM = 4

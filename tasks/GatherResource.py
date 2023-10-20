@@ -1,20 +1,23 @@
 import traceback
 
 from filepath.constants import MAP
-from filepath.file_relative_paths import BuffsImageAndProps, ItemsImageAndProps, ImagePathAndProps
+from filepath.file_relative_paths import (
+    BuffsImageAndProps,
+    ItemsImageAndProps,
+    ImagePathAndProps,
+)
 from tasks.Task import Task
 from tasks.constants import TaskName, Resource
 
 
 class GatherResource(Task):
-
     def __init__(self, bot):
         super().__init__(bot)
         self.max_query_space = 5
 
     def do(self, next_task=TaskName.BREAK):
         magnifier_pos = (60, 540)
-        self.set_text(title='Gather Resource', remove=True)
+        self.set_text(title="Gather Resource", remove=True)
         self.call_idle_back()
 
         if self.bot.config.useGatheringBoosts:
@@ -25,19 +28,14 @@ class GatherResource(Task):
             has_blue = self.has_buff(MAP, b_buff_props)
             has_purple = self.has_buff(MAP, p_buff_props)
             if not has_blue and not has_purple:
-                self.set_text(insert='use gathering boosts')
+                self.set_text(insert="use gathering boosts")
                 self.use_item(MAP, [b_item_props, p_item_props])
             else:
                 self.set_text(insert="gathering boosts buff is already on")
 
         last_resource_pos = []
         should_decreasing_lv = False
-        resource_icon_pos = [
-            (450, 640),
-            (640, 640),
-            (830, 640),
-            (1030, 640)
-        ]
+        resource_icon_pos = [(450, 640), (640, 640), (830, 640), (1030, 640)]
         try:
             chose_icon_pos = resource_icon_pos[0]
             self.back_to_map_gui()
@@ -70,14 +68,19 @@ class GatherResource(Task):
             x, y = magnifier_pos
             self.tap(x, y, 1)
             self.tap(chose_icon_pos[0], chose_icon_pos[1], 1)
-            search_pos = self.gui.check_any(ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value)[2]
-            dec_pos = self.gui.check_any(ImagePathAndProps.DECREASING_BUTTON_IMAGE_PATH.value)[2]
-            inc_pos = self.gui.check_any(ImagePathAndProps.INCREASING_BUTTON_IMAGE_PATH.value)[2]
+            search_pos = self.gui.check_any(
+                ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+            )[2]
+            dec_pos = self.gui.check_any(
+                ImagePathAndProps.DECREASING_BUTTON_IMAGE_PATH.value
+            )[2]
+            inc_pos = self.gui.check_any(
+                ImagePathAndProps.INCREASING_BUTTON_IMAGE_PATH.value
+            )[2]
             self.tap(inc_pos[0] - 33, inc_pos[1], 0.3)
 
             repeat_count = 0
             for i in range(10):
-
                 # open search resource
                 if len(last_resource_pos) > 0:
                     self.back_to_map_gui()
@@ -85,7 +88,9 @@ class GatherResource(Task):
                     if self.bot.config.holdOneQuerySpace:
                         space = self.check_query_space()
                         if space <= 1:
-                            self.set_text(insert="Match query space less or equal to 1, stop!")
+                            self.set_text(
+                                insert="Match query space less or equal to 1, stop!"
+                            )
                             return next_task
 
                     x, y = magnifier_pos
@@ -99,10 +104,14 @@ class GatherResource(Task):
 
                 for j in range(5):
                     self.tap(search_pos[0], search_pos[1], 2)
-                    is_found, _, _ = self.gui.check_any(ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value)
+                    is_found, _, _ = self.gui.check_any(
+                        ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                    )
                     if not is_found:
                         break
-                    self.set_text(insert="Not found, decreasing level by 1 [{}]".format(j))
+                    self.set_text(
+                        insert="Not found, decreasing level by 1 [{}]".format(j)
+                    )
                     self.tap(dec_pos[0], dec_pos[1], 0.3)
 
                 self.set_text(insert="Resource found")
@@ -121,9 +130,13 @@ class GatherResource(Task):
                         continue
                 last_resource_pos.append(new_resource_pos)
                 should_decreasing_lv = False
-                gather_button_pos = self.gui.check_any(ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value)[2]
+                gather_button_pos = self.gui.check_any(
+                    ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
+                )[2]
                 self.tap(gather_button_pos[0], gather_button_pos[1], 2)
-                pos = self.gui.check_any(ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value)[2]
+                pos = self.gui.check_any(
+                    ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                )[2]
                 if pos is None:
                     self.set_text(insert="Not more space for march")
                     return next_task
@@ -132,7 +145,9 @@ class GatherResource(Task):
                 if self.bot.config.gatherResourceNoSecondaryCommander:
                     self.set_text(insert="Remove secondary commander")
                     self.tap(473, 501, 0.5)
-                match_button_pos = self.gui.check_any(ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value)[2]
+                match_button_pos = self.gui.check_any(
+                    ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                )[2]
                 self.set_text(insert="March")
                 self.tap(match_button_pos[0], match_button_pos[1], 2)
                 repeat_count = 0
@@ -147,13 +162,16 @@ class GatherResource(Task):
         self.tap(725, 20, 1)
         result = self.gui.resource_amount_image_to_string()
         self.set_text(
-            insert="\nFood: {}\nWood: {}\nStone: {}\nGold: {}\n".format(result[0], result[1], result[2], result[3]))
+            insert="\nFood: {}\nWood: {}\nStone: {}\nGold: {}\n".format(
+                result[0], result[1], result[2], result[3]
+            )
+        )
 
         ratio = [
             self.bot.config.gatherResourceRatioFood,
             self.bot.config.gatherResourceRatioWood,
             self.bot.config.gatherResourceRatioStone,
-            self.bot.config.gatherResourceRatioGold
+            self.bot.config.gatherResourceRatioGold,
         ]
 
         ras = sum(ratio)
@@ -170,7 +188,9 @@ class GatherResource(Task):
         return m
 
     def check_query_space(self):
-        found, _, _ = self.gui.check_any(ImagePathAndProps.HAS_MATCH_QUERY_IMAGE_PATH.value)
+        found, _, _ = self.gui.check_any(
+            ImagePathAndProps.HAS_MATCH_QUERY_IMAGE_PATH.value
+        )
         curr_q, max_q = self.gui.match_query_to_string()
         if curr_q is None:
             return self.max_query_space
