@@ -65,7 +65,7 @@ class Task:
         )
         self.tap(285, 20, 0.5)
         _, _, heal_icon_pos = self.gui.check_any(
-            ImagePathAndProps.HEAL_ICON_IMAGE_PATH.value
+            ImagePathAndProps.HEAL_BUTTON_IMAGE_PATH.value
         )
         if heal_icon_pos is None:
             return

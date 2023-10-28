@@ -440,6 +440,14 @@ class ImagePathAndProps(Enum):
         25,
         HEAL_ICON,
     ]
+    HEAL_BUTTON_IMAGE_PATH = [
+        "resource\\heal_button.png",
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.80,
+        25,
+        HEAL_BUTTON,
+    ]
     DAILY_AP_CLAIM_BUTTON_IMAGE_PATH = [
         "resource\\daily_ap_claim.png",
         (1280, 720),
