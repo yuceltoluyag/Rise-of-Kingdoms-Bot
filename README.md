@@ -3,8 +3,7 @@
 ![stars](https://img.shields.io/github/stars/yuceltoluyag/Rise-of-Kingdoms-Bot)
 ![lincense](https://img.shields.io/github/license/yuceltoluyag/Rise-of-Kingdoms-Bot)
 
-- [Rise of Kingdom Bot](#rise-of-kingdom-bot)
-    + [**Introduction**](#--introduction--)
+- [**Introduction**](#rise-of-kingdom-bot)
     + [Requirements](#requirements)
     + [Functions](#functions)
 - [Can it do captcha?](#can-it-do-captcha-)
@@ -143,14 +142,12 @@ Note: Don't forget to move your **'save'**, **'config.json'** and **'devices_con
 # Disclaimer
 
 ```python
-#import disclaimer
-/*
- *
- * We are not responsible for banned account or any other punishment by this game's GM. 
- * Please do some research if you have any concerns about features included in this repo
- * before using it! YOU are choosing to use these scripts, and if
- * you point the finger at us for messing up your account, we will laugh at you.
- *
- */
+import disclaimer
+"""
+  We are not responsible for banned account or any other punishment by this game's GM. 
+  Please do some research if you have any concerns about features included in this repo
+  before using it! YOU are choosing to use these scripts, and if
+  you point the finger at us for messing up your account, we will laugh at you.
+ """
 ```
 
