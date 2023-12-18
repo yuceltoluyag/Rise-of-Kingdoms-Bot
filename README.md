@@ -3,6 +3,17 @@
 ![stars](https://img.shields.io/github/stars/yuceltoluyag/Rise-of-Kingdoms-Bot)
 ![lincense](https://img.shields.io/github/license/yuceltoluyag/Rise-of-Kingdoms-Bot)
 
+- [Rise of Kingdom Bot](#rise-of-kingdom-bot)
+    + [**Introduction**](#--introduction--)
+    + [Requirements](#requirements)
+    + [Functions](#functions)
+- [Can it do captcha?](#can-it-do-captcha-)
+    + [Set Up](#set-up)
+    + [Configurations](#configurations)
+    + [Show case](#show-case)
+  * [WARNING](#warning)
+- [Disclaimer](#disclaimer)
+
 # Rise of Kingdom Bot
 
 ### **Introduction**
@@ -118,13 +129,28 @@ Note: Don't forget to move your **'save'**, **'config.json'** and **'devices_con
 - Emulator must **Enable** Android Debug Bridge (ADB)
 - Game language must be <u>**English**</u>
 
-### WARNING
-
-- **Use it at your own risk!**
-- **I don't know will your account be banned by using it!**
-
 ### Show case
 
 [![](https://markdown-videos.deta.dev/youtube/6IObh_HJvrk)](https://youtu.be/6IObh_HJvrk)
 
 - [Youtube Shorts](https://www.youtube.com/@yuceltoluyag/shorts)
+
+## WARNING
+
+- **Use it at your own risk!**
+- **I don't know will your account be banned by using it!**
+
+# Disclaimer
+
+```python
+#import disclaimer
+/*
+ *
+ * We are not responsible for banned account or any other punishment by this game's GM. 
+ * Please do some research if you have any concerns about features included in this repo
+ * before using it! YOU are choosing to use these scripts, and if
+ * you point the finger at us for messing up your account, we will laugh at you.
+ *
+ */
+```
+
