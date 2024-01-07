@@ -1,0 +1,73 @@
+name: "🐞 Bug Report"
+title: "[BUG]: (A short description of the bug...)"
+description: "Report a bug"
+labels: [bug, needs-triage]
+assignees:
+  - yuceltoluyag
+body:
+  - type: markdown
+    attributes:
+      value: |
+        #### Note:
+        Before reporting a bug, see [Issues](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/issues) to check if an issue already exists for the bug you encountered.
+  - type: markdown
+    attributes:
+      value: |
+        ##  Provide details about the bug:
+        * What is the problem?
+        * What behavior were you expecting?
+        * What happened instead?
+        * Include full errors, uncaught exceptions, stack traces, and relevant logs.
+        * Provide a sequence of steps to reproduce the issue. - Suggest a fix, if possible.
+        * Please attach screenshots or videos so that we can better understand your bug reports.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you saw! Please don't paste console printouts in this area.
+    validations:
+      required: true
+  - type: dropdown
+    id: package-version
+    attributes:
+      label: Package version used
+      description: What version of the package are you using?
+      options:
+        - 0.0.1
+        - 0.0.1-Beta
+        - Git version (Genius User :D)
+    validations:
+      required: true
+  - type: input
+    id: operating-system
+    attributes:
+      label: Please provide information about your operating system
+      description: Windows edition, your Window version number and architecture (32-bit or 64-bit)
+      placeholder: Example Windows 10 Pro 64bit 22H2
+    validations:
+      required: true
+  - type: input
+    id: emulator
+    attributes:
+      label: Please provide information about your emulator
+      description: Emulator name and version
+      placeholder: Example LDPlayer 4.0.44
+    validations:
+      required: true
+  - type: input
+    id: python-version
+    attributes:
+      label: Please provide information about your python version
+      description: python version number
+      placeholder: Example 3.11.4
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+        required: true
