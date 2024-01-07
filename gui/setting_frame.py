@@ -11,13 +11,13 @@ import config
 class SettingFrame(Frame):
     def __init__(self, windows, cnf={}, **kwargs):
         Frame.__init__(self, windows, kwargs)
-        self.windows_size = [kwargs['width'], kwargs['height']]
+        self.windows_size = [kwargs["width"], kwargs["height"]]
 
         list = [
             self.windows_resize(),
             self.option_frame(),
             self.twocaptcha_entries(),
-            self.haoi_entries()
+            self.haoi_entries(),
         ]
 
         for row in range(len(list)):
@@ -30,7 +30,7 @@ class SettingFrame(Frame):
 
     def option_frame(self):
         f = Frame(self)
-        method_label = Label(f, text='Pass Verification Method: ')
+        method_label = Label(f, text="Pass Verification Method: ")
 
         options = [NONE, TWO_CAPTCHA, HAO_I]
         value = config.global_config.method
@@ -48,22 +48,33 @@ class SettingFrame(Frame):
         return f
 
     def haoi_entries(self):
-
         default_user_key = StringVar()
         default_user_key.set(config.global_config.haoiUser)
         default_software_key = StringVar()
         default_software_key.set(config.global_config.haoiRebate)
 
-        lf = LabelFrame(self, text='haoi')
-        ul = Label(lf, text='user key:')
+        lf = LabelFrame(self, text="haoi")
+        ul = Label(lf, text="user key:")
         ue = Entry(lf, textvariable=default_user_key)
-        rl = Label(lf, text='software key:')
+        rl = Label(lf, text="software key:")
         re = Entry(lf, textvariable=default_software_key)
 
         ul.config(width=10, anchor=W, justify=LEFT)
-        ue.config(width=53, validate='key', validatecommand=(lf.register(self.creator('haoiUser')), '%P'))
-        rl.config(width=10, anchor=W, justify=LEFT, )
-        re.config(width=53, validate='key', validatecommand=(lf.register(self.creator('haoiRebate')), '%P'))
+        ue.config(
+            width=53,
+            validate="key",
+            validatecommand=(lf.register(self.creator("haoiUser")), "%P"),
+        )
+        rl.config(
+            width=10,
+            anchor=W,
+            justify=LEFT,
+        )
+        re.config(
+            width=53,
+            validate="key",
+            validatecommand=(lf.register(self.creator("haoiRebate")), "%P"),
+        )
 
         ul.grid(row=0, column=0, sticky=N + W, padx=(10, 10), pady=(10, 0))
         ue.grid(row=0, column=1, sticky=N + W, padx=(0, 10), pady=(10, 0))
@@ -73,16 +84,19 @@ class SettingFrame(Frame):
         return lf
 
     def twocaptcha_entries(self):
-
         default_user_key = StringVar()
         default_user_key.set(config.global_config.twocaptchaKey)
 
-        lf = LabelFrame(self, text='2captcha')
-        ul = Label(lf, text='user key:')
+        lf = LabelFrame(self, text="2captcha")
+        ul = Label(lf, text="user key:")
         ue = Entry(lf, textvariable=default_user_key)
 
         ul.config(width=10, anchor=W, justify=LEFT)
-        ue.config(width=53, validate='key', validatecommand=(lf.register(self.creator('twocaptchaKey')), '%P'))
+        ue.config(
+            width=53,
+            validate="key",
+            validatecommand=(lf.register(self.creator("twocaptchaKey")), "%P"),
+        )
         ul.grid(row=0, column=0, sticky=N + W, padx=(10, 10), pady=(10, 10))
         ue.grid(row=0, column=1, sticky=N + W, padx=(0, 10), pady=(10, 10))
 
@@ -90,16 +104,16 @@ class SettingFrame(Frame):
 
     def windows_resize(self):
         f = Frame(self)
-        label = Label(f, text='Windows Size(Restart to Effect): ')
+        label = Label(f, text="Windows Size(Restart to Effect): ")
 
-        options = ['470 x 450', '470 x 550', '470 x 650', '470 x 750', '470 x 850']
+        options = ["470 x 450", "470 x 550", "470 x 650", "470 x 750", "470 x 850"]
         screen_size = config.global_config.screenSize
-        value = '{} x {}'.format(screen_size[0], screen_size[1])
+        value = "{} x {}".format(screen_size[0], screen_size[1])
         variable = StringVar()
         variable.set(value)
 
         def command(value):
-            value = value.split('x')
+            value = value.split("x")
             config.global_config.screenSize = [int(value[0]), int(value[1])]
             write_config(config.global_config)
 

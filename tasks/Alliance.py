@@ -11,23 +11,25 @@ class Alliance(Task):
         super().__init__(bot)
 
     def do(self, next_task=TaskName.MATERIALS):
-        super().set_text(title='Alliance', remove=True)
+        super().set_text(title="Alliance", remove=True)
         alliance_btn_pos = (1030, 670)
         try:
-            for name in ['HELP', 'GIFTS', 'TERRITORY', 'TECHNOLOGY']:
-                super().set_text(insert='Open alliance')
+            for name in ["HELP", "GIFTS", "TERRITORY", "TECHNOLOGY"]:
+                super().set_text(insert="Open alliance")
                 super().back_to_home_gui()
                 super().menu_should_open(True)
                 x, y = alliance_btn_pos
                 super().tap(x, y, 3)
 
-                if name == 'HELP':
-                    super().set_text(insert='Help Alliance')
+                if name == "HELP":
+                    super().set_text(insert="Help Alliance")
                     super().tap(1020, 400)  # enter the help page
-                    super().tap(650, 650)  # tap the help button if present, otherwise it will tap on empty space
+                    super().tap(
+                        650, 650
+                    )  # tap the help button if present, otherwise it will tap on empty space
 
-                elif name == 'GIFTS':
-                    super().set_text(insert='Claim gift')
+                elif name == "GIFTS":
+                    super().set_text(insert="Claim gift")
                     gifts_pos = (885, 560)
                     rate_pos = (930, 205)
                     normal_pos = (670, 205)
@@ -37,18 +39,20 @@ class Alliance(Task):
                     super().tap(x, y, 2)
 
                     # collecting rate gifts
-                    super().set_text(insert='Claim rate gift')
+                    super().set_text(insert="Claim rate gift")
                     x, y = rate_pos
                     super().tap(x, y, 1)
                     for i in range(20):
-                        _, _, pos = self.gui.check_any(ImagePathAndProps.GIFTS_CLAIM_BUTTON_IMAGE_PATH.value)
+                        _, _, pos = self.gui.check_any(
+                            ImagePathAndProps.GIFTS_CLAIM_BUTTON_IMAGE_PATH.value
+                        )
                         if pos is None:
                             break
                         x, y = pos
                         super().tap(x, y, 0.5)
 
                     # collecting normal gifts
-                    super().set_text(insert='Claim normal gift')
+                    super().set_text(insert="Claim normal gift")
                     x, y = normal_pos
                     super().tap(x, y, 1)
                     x, y = claim_all_pos
@@ -58,8 +62,8 @@ class Alliance(Task):
                     x, y = treasure
                     super().tap(x, y, 1)
 
-                elif name == 'TERRITORY':
-                    super().set_text(insert='Claim resource')
+                elif name == "TERRITORY":
+                    super().set_text(insert="Claim resource")
                     territory_pos = (885, 405)
                     claim_pos = (1020, 140)
                     x, y = territory_pos
@@ -67,17 +71,20 @@ class Alliance(Task):
                     x, y = claim_pos
                     super().tap(x, y, 1)
 
-                elif name == 'TECHNOLOGY':
-                    super().set_text(insert='Donate technology')
+                elif name == "TECHNOLOGY":
+                    super().set_text(insert="Donate technology")
                     technology_pos = (760, 560)
                     x, y = technology_pos
                     super().tap(x, y, 5)
-                    _, _, recommend_image_pos = self.gui.check_any(ImagePathAndProps.TECH_RECOMMEND_IMAGE_PATH.value)
+                    _, _, recommend_image_pos = self.gui.check_any(
+                        ImagePathAndProps.TECH_RECOMMEND_IMAGE_PATH.value
+                    )
                     if recommend_image_pos is not None:
                         x, y = recommend_image_pos
                         super().tap(x, y + 60, 1)
                         _, _, donate_btn_pos = self.gui.check_any(
-                            ImagePathAndProps.TECH_DONATE_BUTTON_IMAGE_PATH.value)
+                            ImagePathAndProps.TECH_DONATE_BUTTON_IMAGE_PATH.value
+                        )
                         if donate_btn_pos is not None:
                             x, y = donate_btn_pos
                             for i in range(20):
