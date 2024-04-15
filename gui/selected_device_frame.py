@@ -289,7 +289,7 @@ def building_pos_window(parent):
         canvas.bind("<Button 1>", setBuildingCoords)
 
         def after_image_load():
-            image = parent.bot.get_city_image().resize((640, 360), Image.ANTIALIAS)
+            image = parent.bot.get_city_image().resize((640, 360), Image.Resampling.LANCZOS)
             frame.image = image = ImageTk.PhotoImage(image)
             canvas.create_image((0, 0), image=image, anchor='nw')
             parent.bot.curr_thread = None
