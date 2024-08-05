@@ -12,19 +12,19 @@ class ClaimVip(Task):
         vip_pos = (150, 65)
         vip_point_chest = (1010, 180)
         vip_free_chest = (920, 400)
-        super().set_text(title='Claim VIP Chest', remove=True)
+        super().set_text(title="Claim VIP Chest", remove=True)
         super().back_to_home_gui()
         # tap on vip
-        super().set_text(insert='Open VIP')
+        super().set_text(insert="Open VIP")
         x, y = vip_pos
         super().tap(x, y, 2)
         # tap on vip point chest
-        super().set_text(insert='Claim daily vip point')
+        super().set_text(insert="Claim daily vip point")
         x, y = vip_point_chest
         super().tap(x, y, 5)
         super().tap(x, y, 1)
         # tap on free chest
-        super().set_text(insert='Claim daily free vip chest')
+        super().set_text(insert="Claim daily free vip chest")
         x, y = vip_free_chest
         super().tap(x, y, 1)
         return next_task
