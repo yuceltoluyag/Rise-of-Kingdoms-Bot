@@ -1,7 +1,7 @@
 opencv-python
 pytesseract
 numpy
-Pillow==9.5.0
+Pillow==11.0.0
 pure-python-adb
 requests
 requests-toolbelt
