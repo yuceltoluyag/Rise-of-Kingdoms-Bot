@@ -2,6 +2,7 @@
 ![forks](https://img.shields.io/github/forks/yuceltoluyag/Rise-of-Kingdoms-Bot)
 ![stars](https://img.shields.io/github/stars/yuceltoluyag/Rise-of-Kingdoms-Bot)
 ![lincense](https://img.shields.io/github/license/yuceltoluyag/Rise-of-Kingdoms-Bot)
+[![CodeQL Advanced](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/codeql.yml/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/codeql.yml) [![CodeQL](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/github-code-scanning/codeql)  [![Dependabot Updates](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/dependabot/dependabot-updates) [![first-interaction](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/greetings.yml/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/greetings.yml)
 
 - [**Introduction**](#rise-of-kingdom-bot)
     + [Requirements](#requirements)
