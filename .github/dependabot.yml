@@ -5,15 +5,11 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "pip" # Python paket güncellemeleri
+    directory: "/" # Requirements.txt'in bulunduğu dizin
     schedule:
       interval: "monthly"
-  - package-ecosystem: "docker"
-    directory: "/docker"
-    schedule:
-      interval: "monthly"
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: "github-actions" # GitHub Actions güncellemeleri
+    directory: "/" # Workflow dosyalarının bulunduğu dizin
     schedule:
       interval: "monthly"
