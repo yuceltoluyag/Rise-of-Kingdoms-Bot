@@ -6,16 +6,15 @@ import adb
 import re
 import traceback
 
-RUNNING = 'running'
-DISCONNECTED = 'disconnected'
-CONNECTED = 'connected'
+RUNNING = "running"
+DISCONNECTED = "disconnected"
+CONNECTED = "connected"
 
 
 class DeviceListFrame(Frame):
-
     def __init__(self, notebook, main_frame, cnf={}, **kwargs):
         Frame.__init__(self, notebook, kwargs)
-        self.windows_size = [kwargs['width'], kwargs['height']]
+        self.windows_size = [kwargs["width"], kwargs["height"]]
 
         self.devices_config = load_device_config()
         self.main_frame = main_frame
@@ -23,7 +22,7 @@ class DeviceListFrame(Frame):
         dlt = DeviceListTable(self, main_frame)
 
         for config in self.devices_config:
-            dlt.add_row(config.get('serial_no'))
+            dlt.add_row(config.get("serial_no"))
 
         adf.set_on_find_click(dlt.delete_all_row, dlt.add_row)
         adf.grid(row=0, column=0, pady=(10, 0), sticky=N + W)
@@ -40,6 +39,7 @@ class DeviceListTable(Frame):
 
     def delete_all_row(self):
         self.device_rows.clear()
+
     def add_row(self, serial_no):
         try:
             new_row = DeviceRow(self, self.main_frame, serial_no)
@@ -75,14 +75,20 @@ class DeviceListTable(Frame):
         ip, port = row.ip, row.port
         # tmp = list(filter(lambda addr: addr['ip'] == ip and addr['port'] == port, self.master.devices_config))
         self.master.devices_config.remove(
-            next(addr for addr in self.master.devices_config if addr['ip'] == ip and addr['port'] == port)
+            next(
+                addr
+                for addr in self.master.devices_config
+                if addr["ip"] == ip and addr["port"] == port
+            )
         )
         write_device_config(self.master.devices_config)
         self.remove_row(row)
 
     def render(self):
         for i in range(len(self.device_rows)):
-            self.device_rows[i].grid(row=i + 1, column=0, sticky=W, padx=(10, 0), pady=(10, 0))
+            self.device_rows[i].grid(
+                row=i + 1, column=0, sticky=W, padx=(10, 0), pady=(10, 0)
+            )
 
 
 class DeviceRow(Frame):
@@ -95,13 +101,15 @@ class DeviceRow(Frame):
         self.serial_no = serial_no
         self.device_frame = None
 
-        self.name_label = Label(
-            self, text=serial_no, bg='white', height=1, width=10)
+        self.name_label = Label(self, text=serial_no, bg="white", height=1, width=10)
         self.status_label = Label(
-            self, text=DISCONNECTED if self.device is None else CONNECTED, bg='white', width=11
+            self,
+            text=DISCONNECTED if self.device is None else CONNECTED,
+            bg="white",
+            width=11,
         )
-        self.display_btn = Button(self, text='Display')
-        self.del_btn = Button(self, text='Delete')
+        self.display_btn = Button(self, text="Display")
+        self.del_btn = Button(self, text="Delete")
 
         self.name_label.grid(row=0, column=0, sticky=W, padx=(10, 0))
         self.display_btn.grid(row=0, column=3, sticky=W, padx=(10, 0))
@@ -111,7 +119,6 @@ class DeviceRow(Frame):
         self.del_btn.config(command=lambda: on_click(self))
 
     def set_on_display_click(self, on_click=lambda self: self):
-
         def callback():
             device = adb.bridge.get_device(self.serial_no)
             device.name = self.serial_no
@@ -119,9 +126,13 @@ class DeviceRow(Frame):
             if device is None:
                 return
             if self.device_frame is None:
-                self.status_label.config(text=DISCONNECTED if device is None else CONNECTED)
+                self.status_label.config(
+                    text=DISCONNECTED if device is None else CONNECTED
+                )
                 width, height = self.master.master.windows_size
-                self.device_frame = SelectedDeviceFrame(self.main_frame, device, width=width, height=height)
+                self.device_frame = SelectedDeviceFrame(
+                    self.main_frame, device, width=width, height=height
+                )
                 self.device_frame.grid(row=0, column=0, sticky=N + W)
                 self.device_frame.grid_forget()
             on_click(self)
@@ -130,21 +141,20 @@ class DeviceRow(Frame):
 
 
 class AddDeviceFrame(Frame):
-
     def __init__(self, parent, cnf={}, **kwargs):
         Frame.__init__(self, parent, kwargs)
 
-        self.name_label = Label(self, text='name: ')
+        self.name_label = Label(self, text="name: ")
         self.name_entry = Entry(self)
 
-        self.ip_label = Label(self, text='ip: ')
+        self.ip_label = Label(self, text="ip: ")
         self.ip_entry = Entry(self)
 
-        self.port_label = Label(self, text='port: ')
+        self.port_label = Label(self, text="port: ")
         self.port_entry = Entry(self)
 
-        self.add_btn = Button(self, text='Add', width=10)
-        self.find_btn = Button(self, text='Find', width=10)
+        self.add_btn = Button(self, text="Add", width=10)
+        self.find_btn = Button(self, text="Find", width=10)
 
         def ip_entry_validate_cmd(value, action_type):
             # if action_type == '1':
@@ -176,18 +186,18 @@ class AddDeviceFrame(Frame):
         # self.add_btn.grid(row=0, column=6, sticky=W, padx=5)
         self.find_btn.grid(row=0, column=6, sticky=W, padx=5)
 
-    def set_on_find_click(self, clear_row, onclick=lambda device,serial_no: None):
+    def set_on_find_click(self, clear_row, onclick=lambda device, serial_no: None):
         def callback():
             clear_row()
             list_devices = adb.initAdb()
             self.master.devices_config = []
             for device in list_devices:
                 onclick(device.get_serial_no())
-                
+
                 self.master.devices_config.append(
-                {
-                    'serial_no': device.get_serial_no(),
-                }
+                    {
+                        "serial_no": device.get_serial_no(),
+                    }
                 )
             write_device_config(self.master.devices_config)
 
@@ -205,9 +215,9 @@ class AddDeviceFrame(Frame):
             on_click(name, ip, port)
             self.master.devices_config.append(
                 {
-                    'name': self.name_entry.get(),
-                    'ip': self.ip_entry.get(),
-                    'port': self.port_entry.get()
+                    "name": self.name_entry.get(),
+                    "ip": self.ip_entry.get(),
+                    "port": self.port_entry.get(),
                 }
             )
             write_device_config(self.master.devices_config)
