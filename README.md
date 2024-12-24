@@ -1,4 +1,7 @@
 ![issues](https://img.shields.io/github/issues/yuceltoluyag/Rise-of-Kingdoms-Bot)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 ![forks](https://img.shields.io/github/forks/yuceltoluyag/Rise-of-Kingdoms-Bot)
 ![stars](https://img.shields.io/github/stars/yuceltoluyag/Rise-of-Kingdoms-Bot)
 ![lincense](https://img.shields.io/github/license/yuceltoluyag/Rise-of-Kingdoms-Bot)
@@ -155,6 +158,20 @@ import disclaimer
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://yuceltoluyag.github.io/"><img src="https://avatars.githubusercontent.com/u/16064131?v=4?s=100" width="100px;" alt="yücel"/><br /><sub><b>yücel</b></sub></a><br /><a href="https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/commits?author=yuceltoluyag" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 

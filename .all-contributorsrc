@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "yuceltoluyag",
+      "name": "yücel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16064131?v=4",
+      "profile": "https://yuceltoluyag.github.io/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "Rise-of-Kingdoms-Bot",
+  "projectOwner": "yuceltoluyag"
+}
