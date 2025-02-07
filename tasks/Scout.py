@@ -10,7 +10,6 @@ class Scout(Task):
         super().__init__(bot)
 
     def do(self, next_task=TaskName.BREAK):
-
         try:
             self.set_text(title="Auto Scout")
             mail_pos = [1230, 570]
@@ -76,7 +75,6 @@ class Scout(Task):
                     continue
 
                 if name == ImagePathAndProps.INVESTIGATE_BUTTON_IMAGE_PATH.value[5]:
-
                     found, name, pos = self.gui.check_any(
                         ImagePathAndProps.SCOUT_IDLE_ICON_IMAGE_PATH.value,
                         ImagePathAndProps.SCOUT_ZZ_ICON_IMAGE_PATH.value,

@@ -9,8 +9,10 @@ class Collecting(Task):
         super().__init__(bot)
 
     def do(self, next_task=TaskName.CLAIM_QUEST):
-        super().set_text(title='Collecting Resource, Troops, and Help Alliance', remove=True)
-        super().set_text(insert='Init view')
+        super().set_text(
+            title="Collecting Resource, Troops, and Help Alliance", remove=True
+        )
+        super().set_text(insert="Init view")
 
         try:
             super().back_to_home_gui()
@@ -28,10 +30,10 @@ class Collecting(Task):
                 BuildingNames.LUMBER_MILL.value,
                 BuildingNames.QUARRY.value,
                 BuildingNames.GOLDMINE.value,
-                BuildingNames.ALLIANCE_CENTER.value
+                BuildingNames.ALLIANCE_CENTER.value,
             ]:
                 x, y = self.bot.building_pos[name]
-                self.set_text(insert='tap {} at position ({},{})'.format(name, x, y))
+                self.set_text(insert="tap {} at position ({},{})".format(name, x, y))
                 self.tap(x, y)
                 self.tap(x_e, y_e, 0.2)
 
