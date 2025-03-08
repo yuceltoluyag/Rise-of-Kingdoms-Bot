@@ -12,7 +12,7 @@ class Alliance(Task):
 
     def do(self, next_task=TaskName.MATERIALS):
         super().set_text(title='Alliance', remove=True)
-        alliance_btn_pos = (1030, 670)
+        alliance_btn_pos = (930, 670)
         try:
             for name in ['HELP', 'GIFTS', 'TERRITORY', 'TECHNOLOGY']:
                 super().set_text(insert='Open alliance')

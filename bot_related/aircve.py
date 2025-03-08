@@ -142,9 +142,14 @@ def find_all_template(im_source, im_search, threshold=0.5, maxcnt=0, rgb=False, 
             top_left = min_loc
         else:
             top_left = max_loc
+        
+        # Zaokrąglenie max_val do najbliższego 0.1
+        max_val = round_to_nearest_tenth(max_val)
+        
         if DEBUG: 
-            print('templmatch_value(thresh:%.1f) = %.3f' %(threshold, max_val)) # not show debug
-        if max_val < threshold:
+            print('templmatch_value(thresh:%.1f) = %.3f' %(threshold, max_val))  # Debug output
+        
+        if max_val < threshold - 0.1:
             break
         # calculator middle point
         middle_point = (top_left[0]+w/2, top_left[1]+h/2)
@@ -158,6 +163,9 @@ def find_all_template(im_source, im_search, threshold=0.5, maxcnt=0, rgb=False, 
         # floodfill the already found area
         cv2.floodFill(res, None, max_loc, (-1000,), max_val-threshold+0.1, 1, flags=cv2.FLOODFILL_FIXED_RANGE)
     return result
+
+def round_to_nearest_tenth(number):
+    return round(number * 10) / 10
 
 
 def _sift_instance(edge_threshold=100):

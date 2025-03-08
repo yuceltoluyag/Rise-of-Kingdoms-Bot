@@ -13,13 +13,15 @@ class Scout(Task):
 
         try:
             self.set_text(title="Auto Scout")
-            mail_pos = [1230, 570]
+            rozwin_liste = [1230, 670]
+            mail_pos = [1130, 670]
             report_pos = [250, 45]
             center_pos = (640, 320)
 
             idx = 0
             while self.bot.config.enableInvestigation:
                 self.back_to_map_gui()
+                self.menu_should_open(True)
                 self.set_text(insert="Open mail")
                 x, y = mail_pos
                 self.tap(x, y, 2)
@@ -127,18 +129,18 @@ class Scout(Task):
                 # find and tap explore button
                 self.set_text(insert="try to tap explore")
                 is_found, _, btn_pos = self.gui.check_any(
-                    ImagePathAndProps.SCOUT_EXPLORE_BUTTON_IMAGE_PATH.value
+                    ImagePathAndProps.SCOUT_EXPLORE2_BUTTON_IMAGE_PATH.value
                 )
                 if is_found:
                     x, y = btn_pos
                     self.tap(x, y, 2)
                 else:
                     return next_task
-
+                
                 # find and tap explore button
                 self.set_text(insert="try to tap explore")
                 is_found, _, btn_pos = self.gui.check_any(
-                    ImagePathAndProps.SCOUT_EXPLORE2_BUTTON_IMAGE_PATH.value
+                    ImagePathAndProps.SCOUT_EXPLORE3_BUTTON_IMAGE_PATH.value
                 )
                 if is_found:
                     x, y = btn_pos
