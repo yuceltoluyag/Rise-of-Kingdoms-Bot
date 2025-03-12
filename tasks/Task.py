@@ -115,9 +115,6 @@ class Task:
         self.tap(60, 540, 0.5)
         self.tap(1105, 200, 1)
         self.tap(1220, 35, 2)
-        self.back(1)
-        self.back(1)
-        self.menu_should_open(True)
 
     # Building Position
     def find_building_title(self):

@@ -478,14 +478,6 @@ class ImagePathAndProps(Enum):
         25,
         EXPLORE_BUTTON2,
     ]
-    SCOUT_EXPLORE3_BUTTON_IMAGE_PATH = [
-        "resource\\explore_button3.png",
-        (1280, 720),
-        (0, 0, 0, 0),
-        0.90,
-        25,
-        EXPLORE_BUTTON3,
-    ]
     SCOUT_SEND_BUTTON_IMAGE_PATH = [
         "resource\\scout_send_button.png",
         (1280, 720),
