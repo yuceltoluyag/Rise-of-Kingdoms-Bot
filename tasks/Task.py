@@ -20,8 +20,8 @@ import time
 from filepath.constants import RESOURCES, SPEEDUPS, BOOSTS, EQUIPMENT, OTHER, MAP, HOME
 from random import randrange, uniform
 
-class Task:
 
+class Task:
     center = (640, 360)
 
     def __init__(self, bot):
@@ -224,20 +224,26 @@ class Task:
             traceback.print_exc()
 
         return pos_list
-    
 
     def check_capcha(self):
-        (found, _, pos) = self.gui.check_any(ImagePathAndProps.VERIFICATION_VERIFY_TITLE_IMAGE_PATH.value)
+        (found, _, pos) = self.gui.check_any(
+            ImagePathAndProps.VERIFICATION_VERIFY_TITLE_IMAGE_PATH.value
+        )
         if found:
             self.tap(pos[0], pos[1] + 258, 1)
             time.sleep(5)
             self.pass_verification()
-        (found, _, pos) = self.gui.check_any(ImagePathAndProps.VERIFICATION_VERIFY_BUTTON_IMAGE_PATH.value)
+        (found, _, pos) = self.gui.check_any(
+            ImagePathAndProps.VERIFICATION_VERIFY_BUTTON_IMAGE_PATH.value
+        )
         if found:
             self.tap(pos[0], pos[1], 1)
             time.sleep(5)
             self.pass_verification()
-        (found, _, pos) = self.gui.check_any(GuiCheckImagePathAndProps.VERIFICATION_CHEST_IMG_PATH.value, GuiCheckImagePathAndProps.VERIFICATION_CHEST1_IMG_PATH.value)
+        (found, _, pos) = self.gui.check_any(
+            GuiCheckImagePathAndProps.VERIFICATION_CHEST_IMG_PATH.value,
+            GuiCheckImagePathAndProps.VERIFICATION_CHEST1_IMG_PATH.value,
+        )
         if found:
             self.tap(pos[0], pos[1], 1)
             time.sleep(5)
@@ -256,7 +262,6 @@ class Task:
         return has
 
     def use_item(self, using_location, item_img_props_list):
-
         # Where to use the item
         if using_location == HOME:
             self.back_to_home_gui()
@@ -328,6 +333,17 @@ class Task:
             self.device.shell(cmd_hold)
             self.device.shell(cmd_swipe)
             time.sleep(duration / 1000 + 0.5 + 0.2)
+
+    def move(self, direction="up"):
+        cmd_hold = "input swipe 200 300 200 400 200"
+        if direction == "down":
+            cmd_hold = "input swipe 200 300 200 200 200"
+        elif direction == "right":
+            cmd_hold = "input swipe 200 300 100 300 200"
+        elif direction == "left":
+            cmd_hold = "input swipe 200 300 300 300 200"
+        self.device.shell(cmd_hold)
+        time.sleep(0.1)
 
     # long_press_duration is in milliseconds
     def tap(self, x, y, sleep_time=0.1, long_press_duration=-1):

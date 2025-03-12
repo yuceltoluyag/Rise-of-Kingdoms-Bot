@@ -22,14 +22,12 @@ class Barbarians(Task):
         base_lv = self.bot.config.barbariansBaseLevel
 
         try:
-
             super().set_text(title="Attack Barbarians", remove=True)
             commander_cv_img = None
 
             is_in_city = True
 
             for r in range(self.bot.config.numberOfAttack):
-
                 if min_lv < base_lv:
                     min_lv = base_lv
 
@@ -266,7 +264,6 @@ class Barbarians(Task):
             raise RuntimeError("Commander not in city, stop current task")
 
     def select_save_blue_one(self):
-
         # if blue save one not exist, try to find switch button
         has_save_btn, _, save_btn_pos = self.gui.check_any(
             ImagePathAndProps.UNSELECT_BLUE_ONE_SAVE_BUTTON_IMAGE_PATH.value
