@@ -17,7 +17,15 @@ import traceback
 import time
 
 
-from filepath.constants import RESOURCES, SPEEDUPS, BOOSTS, EQUIPMENT, OTHER, MAP, HOME
+from filepath.constants import (
+    RESOURCES,
+    SPEEDUPS,
+    BOOSTS,
+    EQUIPMENT,
+    OTHER,
+    MAP,
+    HOME,
+)
 from random import randrange, uniform
 
 
@@ -115,6 +123,8 @@ class Task:
         self.tap(60, 540, 0.5)
         self.tap(1105, 200, 1)
         self.tap(1220, 35, 2)
+        self.tap(43, 37, 3)
+        self.tap(42, 38, 3)
 
     # Building Position
     def find_building_title(self):
@@ -349,7 +359,9 @@ class Task:
     def tap(self, x, y, sleep_time=0.1, long_press_duration=-1):
         cmd = None
         if long_press_duration > -1:
-            cmd = "input swipe {} {} {} {} {}".format(x, y, x, y, long_press_duration)
+            cmd = "input swipe {} {} {} {} {}".format(
+                x, y, x, y, long_press_duration
+            )
             sleep_time = long_press_duration / 1000 + 0.2
         else:
             cmd = "input tap {} {}".format(x, y)
@@ -361,7 +373,10 @@ class Task:
     def isRoKRunning(self):
         cmd = "dumpsys window windows | grep mCurrentFocus"
         str = self.device.shell(cmd)
-        return str.find("com.lilithgame.roc.gp/com.harry.engine.MainActivity") != -1
+        return (
+            str.find("com.lilithgame.roc.gp/com.harry.engine.MainActivity")
+            != -1
+        )
 
     def runOfRoK(self):
         cmd = "am start -n com.lilithgame.roc.gp/com.harry.engine.MainActivity"
@@ -398,7 +413,9 @@ class Task:
             print(f"\t* {dt_string} {kwargs[insert].lower()}")
 
         if append in kwargs:
-            self.bot.text[text_list].append(dt_string + " " + kwargs[append].lower())
+            self.bot.text[text_list].append(
+                dt_string + " " + kwargs[append].lower()
+            )
             print(f"\t* {dt_string} {kwargs[append].lower()}")
 
         if remove in kwargs and kwargs.get(remove, False):

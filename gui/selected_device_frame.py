@@ -35,7 +35,9 @@ class SelectedDeviceFrame(Frame):
         self.bot_building_pos = load_building_pos(self.device.save_file_prefix)
         self.windows_size = [kwargs["width"], kwargs["height"]]
 
-        display_frame, self.task_title, self.task_text = self.task_display_frame()
+        display_frame, self.task_title, self.task_text = (
+            self.task_display_frame()
+        )
         config_frame = self.config_frame()
         bottom_frame = self.bottom_frame()
 
@@ -62,7 +64,11 @@ class SelectedDeviceFrame(Frame):
         frame.rowconfigure(2, weight=height - 10)
 
         dl = Label(
-            frame, text=self.device.save_file_prefix, width=width, height=5, bg="white"
+            frame,
+            text=self.device.save_file_prefix,
+            width=width,
+            height=5,
+            bg="white",
         )
         title = Label(frame, text="Task: None", width=width, height=5)
         text = Text(frame, width=width, height=height - 30)
@@ -99,7 +105,9 @@ class SelectedDeviceFrame(Frame):
         def unbound_to_mousewheel(event):
             canvas.unbind_all("<MouseWheel>")
 
-        y_scrollbar = Scrollbar(frame_canvas, orient="vertical", command=canvas.yview)
+        y_scrollbar = Scrollbar(
+            frame_canvas, orient="vertical", command=canvas.yview
+        )
         y_scrollbar.grid(row=0, column=1, sticky="ns")
         canvas.configure(yscrollcommand=y_scrollbar.set)
 
@@ -171,7 +179,9 @@ class SelectedDeviceFrame(Frame):
             if self.building_pos_window is None:
                 self.building_pos_window = building_pos_window(self)
 
-        building_pos_button = button(frame, on_building_pos_click, text="Building Pos")
+        building_pos_button = button(
+            frame, on_building_pos_click, text="Building Pos"
+        )
         building_pos_button.grid(row=0, column=1, sticky=N + W)
 
         return frame
@@ -185,7 +195,12 @@ class SelectedDeviceFrame(Frame):
 
 
 def section_frame(
-    app, parent, title_component_fn, sub_component_fns=[], start_row=0, start_column=0
+    app,
+    parent,
+    title_component_fn,
+    sub_component_fns=[],
+    start_row=0,
+    start_column=0,
 ):
     outer_frame = Frame(parent)
     inner_frame = Frame(outer_frame)
@@ -248,7 +263,9 @@ def building_pos_window(parent):
 
     def building_name_xy_config_frame(master, row, name, pos):
         name_label = Label(master, text=name.replace("_", " ").title())
-        pos_label = Label(master, text="[{}, {}]".format(pos[0], pos[1]), width=18)
+        pos_label = Label(
+            master, text="[{}, {}]".format(pos[0], pos[1]), width=18
+        )
 
         def on_set_click(btn):
             if selected_building["name"] is not None:
@@ -301,16 +318,25 @@ def building_pos_window(parent):
                 parent.bot_building_pos = {}
 
             parent.bot_config.hasBuildingPos = True
-            parent.bot_building_pos[selected_building["name"]] = [pos[0], pos[1]]
-            write_building_pos(parent.bot_building_pos, parent.device.save_file_prefix)
-            selected_building["label"].config(text="[{}, {}]".format(pos[0], pos[1]))
+            parent.bot_building_pos[selected_building["name"]] = [
+                pos[0],
+                pos[1],
+            ]
+            write_building_pos(
+                parent.bot_building_pos, parent.device.save_file_prefix
+            )
+            selected_building["label"].config(
+                text="[{}, {}]".format(pos[0], pos[1])
+            )
             selected_building["name"] = None
             selected_building["label"] = None
 
         canvas.bind("<Button 1>", setBuildingCoords)
 
         def after_image_load():
-            image = parent.bot.get_city_image().resize((640, 360), Image.ANTIALIAS)
+            image = parent.bot.get_city_image().resize(
+                (640, 360), Image.Resampling.LANCZOS
+            )
             frame.image = image = ImageTk.PhotoImage(image)
             canvas.create_image((0, 0), image=image, anchor="nw")
             parent.bot.curr_thread = None
@@ -359,7 +385,9 @@ def building_pos_window(parent):
         inner_frame_right.bind("<Enter>", bound_to_mousewheel)
         inner_frame_right.bind("<Leave>", unbound_to_mousewheel)
 
-        canvas_right.create_window((0, 0), window=inner_frame_right, anchor="nw")
+        canvas_right.create_window(
+            (0, 0), window=inner_frame_right, anchor="nw"
+        )
 
         idx = 0
         for e_name in BuildingNames:
@@ -367,9 +395,11 @@ def building_pos_window(parent):
                 inner_frame_right,
                 idx,
                 e_name.value,
-                parent.bot_building_pos.get(e_name.value, [-1, -1])
-                if parent.bot_building_pos is not None
-                else [-1, -1],
+                (
+                    parent.bot_building_pos.get(e_name.value, [-1, -1])
+                    if parent.bot_building_pos is not None
+                    else [-1, -1]
+                ),
             )
             idx = idx + 1
 
@@ -377,7 +407,9 @@ def building_pos_window(parent):
 
         frame_right.config(width=rf_width - 10, height=360 - 10)
         canvas_right.config(
-            width=rf_width - 10, height=360 - 10, scrollregion=canvas_right.bbox("all")
+            width=rf_width - 10,
+            height=360 - 10,
+            scrollregion=canvas_right.bbox("all"),
         )
 
         frame_right.grid(row=0, column=1, padx=5, pady=5, sticky=N + W)

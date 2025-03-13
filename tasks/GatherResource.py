@@ -61,7 +61,9 @@ class GatherResource(Task):
             if self.bot.config.holdOneQuerySpace:
                 space = self.check_query_space()
                 if space <= 1:
-                    self.set_text(insert="Match query space less or equal to 1, stop!")
+                    self.set_text(
+                        insert="Match query space less or equal to 1, stop!"
+                    )
                     return next_task
 
             # tap on magnifier
@@ -130,17 +132,21 @@ class GatherResource(Task):
                         continue
                 last_resource_pos.append(new_resource_pos)
                 should_decreasing_lv = False
-                gather_button_pos = self.gui.check_any(
+                check_result = self.gui.check_any(
                     ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
-                )[2]
+                )
+                if not check_result[0]:  # if not found
+                    self.set_text(insert="Gather button not found")
+                    continue
+                gather_button_pos = check_result[2]
                 self.tap(gather_button_pos[0], gather_button_pos[1], 2)
-                pos = self.gui.check_any(
+                check_result = self.gui.check_any(
                     ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
-                )[2]
-                if pos is None:
+                )
+                if not check_result[0]:  # if not found
                     self.set_text(insert="Not more space for march")
                     return next_task
-                new_troops_button_pos = pos
+                new_troops_button_pos = check_result[2]
                 self.tap(new_troops_button_pos[0], new_troops_button_pos[1], 2)
                 if self.bot.config.gatherResourceNoSecondaryCommander:
                     self.set_text(insert="Remove secondary commander")
@@ -179,7 +185,9 @@ class GatherResource(Task):
 
         diff = []
         for i in range(4):
-            diff.append((ratio[i] / ras) - ((result[i] if result[i] > -1 else 0) / res))
+            diff.append(
+                (ratio[i] / ras) - ((result[i] if result[i] > -1 else 0) / res)
+            )
 
         m = 0
         for i in range(len(result)):

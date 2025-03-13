@@ -1,7 +1,9 @@
 opencv-python
 pytesseract
 numpy
-Pillow==11.1.0
+Pillow
 pure-python-adb
 requests
 requests-toolbelt
+customtkinter
+python-tkdnd

@@ -9,9 +9,11 @@ class StrImagePosition(Enum):
 class FilePaths(Enum):
     TEST_SRC_FOLDER_PATH = "test_screen_caps\\"
     TEST_CURR_SCREEN_CAP_PATH = "test_screen_caps\\current_cap.png"
-    ADB_EXE_PATH = "adb\\adb.exe"
-    TESSERACT_EXE_PATH = "tesseract\\tesseract.exe"
-    TESSDATA_CHI_SIM_PATH = "tessdata\\chi_sim.traineddata"
+    ADB_EXE_PATH = "C:\\platform-tools\\adb.exe"
+    TESSERACT_EXE_PATH = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+    TESSDATA_CHI_SIM_PATH = (
+        "C:\\Program Files\\Tesseract-OCR\\tessdata\\chi_sim.traineddata"
+    )
     SAVE_FOLDER_PATH = "save\\"
 
 
@@ -54,8 +56,6 @@ class ItemsImageAndProps(Enum):
 
 
 class ImagePathAndProps(Enum):
-    CAVE_IMG_PATH = ["resource\\cave.png", (1280, 720), (0, 0, 0, 0), 0.98, 25, HOME]
-    GEM_IMG_PATH = ["resource\\gem.png", (1280, 720), (0, 0, 0, 0), 0.9, 25, GEM_ICO]
     MAP_BUTTON_IMG_PATH = [
         "resource\\map_button.png",
         (1280, 720),
@@ -440,14 +440,6 @@ class ImagePathAndProps(Enum):
         25,
         HEAL_ICON,
     ]
-    HEAL_BUTTON_IMAGE_PATH = [
-        "resource\\heal_button.png",
-        (1280, 720),
-        (0, 0, 0, 0),
-        0.80,
-        25,
-        HEAL_BUTTON,
-    ]
     DAILY_AP_CLAIM_BUTTON_IMAGE_PATH = [
         "resource\\daily_ap_claim.png",
         (1280, 720),
@@ -731,27 +723,9 @@ class GuiCheckImagePathAndProps(Enum):
         25,
         WINDOW,
     ]
-    VERIFICATION_CHEST_IMG_PATH = [
-        "resource\\verification_chest_button.png",
-        (1280, 720),
-        (0, 0, 0, 0),
-        0.8,
-        25,
-        VERIFICATION_CHEST,
-    ]
-    VERIFICATION_CHEST1_IMG_PATH = [
-        "resource\\verification_chest_button1.png",
-        (1280, 720),
-        (0, 0, 0, 0),
-        0.8,
-        25,
-        VERIFICATION_CHEST1,
-    ]
 
 
 GuiCheckImagePathAndPropsOrdered = [
-    GuiCheckImagePathAndProps.VERIFICATION_CHEST_IMG_PATH,
-    GuiCheckImagePathAndProps.VERIFICATION_CHEST1_IMG_PATH,
     # GuiCheckImagePathAndProps.VERIFICATION_CLOSE_REFRESH_OK_BUTTON_IMAGE_PATH,
     GuiCheckImagePathAndProps.VERIFICATION_VERIFY_BUTTON_IMAGE_PATH,
     GuiCheckImagePathAndProps.MAP_BUTTON_IMG_PATH,
