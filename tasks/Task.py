@@ -8,13 +8,17 @@ from filepath.file_relative_paths import (
     BuffsImageAndProps,
     ItemsImageAndProps,
 )
-from datetime import datetime
+from datetime import datetime, timedelta
 from utils import aircv_rectangle_to_box, stop_thread
 from enum import Enum
 
 import config
 import traceback
 import time
+import os
+import shutil
+import cv2
+import numpy as np
 
 
 from filepath.constants import (
@@ -36,6 +40,15 @@ class Task:
         self.bot = bot
         self.device = bot.device
         self.gui = bot.gui
+
+        # Debug ayarları
+        self.debug_dir = "debug_images"
+        self.debug_enabled = False  # Varsayılan olarak kapalı
+        self.debug_max_age_days = 3  # 3 günden eski debug dosyalarını temizle
+
+        # Debug klasörünü oluştur
+        if not os.path.exists(self.debug_dir):
+            os.makedirs(self.debug_dir)
 
     def call_idle_back(self):
         self.set_text(insert="call back idle commander")
@@ -425,3 +438,129 @@ class Task:
 
     def do(self, next_task):
         return next_task
+
+    def enable_debug(self):
+        """Debug modunu etkinleştirir"""
+        self.debug_enabled = True
+        self.gui.debug = True
+        print("Debug modu etkinleştirildi")
+
+    def disable_debug(self):
+        """Debug modunu devre dışı bırakır"""
+        self.debug_enabled = False
+        self.gui.debug = False
+        print("Debug modu devre dışı bırakıldı")
+
+    def toggle_debug(self):
+        """Debug modunu açar veya kapatır"""
+        if self.debug_enabled:
+            self.disable_debug()
+        else:
+            self.enable_debug()
+        return self.debug_enabled
+
+    def clean_debug_directory(self, max_age_days=None):
+        """
+        Debug klasöründeki eski dosyaları temizler
+
+        Args:
+            max_age_days: Temizlenecek dosyaların maksimum yaşı (gün olarak)
+                          None ise self.debug_max_age_days kullanılır
+        """
+        if max_age_days is None:
+            max_age_days = self.debug_max_age_days
+
+        if not os.path.exists(self.debug_dir):
+            return
+
+        try:
+            now = datetime.now()
+            count = 0
+
+            for filename in os.listdir(self.debug_dir):
+                filepath = os.path.join(self.debug_dir, filename)
+
+                # Dosya ise
+                if os.path.isfile(filepath):
+                    # Dosya oluşturma zamanını al
+                    file_time = datetime.fromtimestamp(
+                        os.path.getctime(filepath)
+                    )
+
+                    # Dosya yaşını hesapla
+                    age = now - file_time
+
+                    # Belirtilen yaştan eski ise sil
+                    if age > timedelta(days=max_age_days):
+                        os.remove(filepath)
+                        count += 1
+
+            if count > 0:
+                print(f"Debug: {count} eski debug dosyası temizlendi")
+
+        except Exception as e:
+            print(f"Debug: Klasör temizleme hatası: {str(e)}")
+
+    def save_debug_image(self, prefix):
+        """
+        Ekran görüntüsünü debug klasörüne kaydeder
+
+        Args:
+            prefix: Dosya adı öneki
+
+        Returns:
+            str: Kaydedilen dosyanın yolu veya None (hata durumunda)
+        """
+        if not self.debug_enabled:
+            return None
+
+        try:
+            # Tarih ve saat bilgisini al
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            # Dosya adını oluştur
+            filename = f"{prefix}_{timestamp}.png"
+            # Tam dosya yolunu oluştur
+            filepath = os.path.join(self.debug_dir, filename)
+            # Ekran görüntüsünü kaydet
+            screen_img = self.gui.get_curr_device_screen_img_byte_array()
+            with open(filepath, "wb") as f:
+                f.write(screen_img)
+            print(f"Debug: Ekran görüntüsü kaydedildi: {filepath}")
+            return filepath
+        except Exception as e:
+            print(f"Debug: Ekran görüntüsü kaydedilirken hata oluştu: {str(e)}")
+            return None
+
+    def create_reference_image(self, x, y, width, height, output_path):
+        """
+        Ekran görüntüsünden belirli bir bölgeyi keserek referans görüntü oluşturur
+
+        Args:
+            x, y: Kesilen bölgenin sol üst köşesinin koordinatları
+            width, height: Kesilen bölgenin genişliği ve yüksekliği
+            output_path: Kaydedilecek dosyanın yolu
+
+        Returns:
+            bool: Başarılı ise True, değilse False
+        """
+        if not self.debug_enabled:
+            return False
+
+        try:
+            # Ekran görüntüsünü al
+            screen_img = self.gui.get_curr_device_screen_img_byte_array()
+            # NumPy dizisine dönüştür
+            np_arr = np.frombuffer(screen_img, np.uint8)
+            # OpenCV ile görüntüyü oku
+            img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            # Belirtilen bölgeyi kes
+            cropped = img[y : y + height, x : x + width]
+            # Dosyaya kaydet
+            cv2.imwrite(output_path, cropped)
+            print(f"Debug: Referans görüntü oluşturuldu: {output_path}")
+            return True
+        except Exception as e:
+            print(
+                f"Debug: Referans görüntü oluşturulurken hata oluştu: {str(e)}"
+            )
+            return False

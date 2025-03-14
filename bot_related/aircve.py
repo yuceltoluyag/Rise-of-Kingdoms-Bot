@@ -49,7 +49,9 @@ def find_template(
     @return find location
     if not found; return None
     """
-    result = find_all_template(im_source, im_search, threshold, 1, rgb, bgremove)
+    result = find_all_template(
+        im_source, im_search, threshold, 1, rgb, bgremove
+    )
     return result[0] if result else None
 
 
@@ -83,7 +85,11 @@ def find_all_template(
         resbgr = [0, 0, 0]
         for i in range(3):  # bgr
             resbgr[i] = cv2.matchTemplate(i_bgr[i], s_bgr[i], method)
-        res = resbgr[0] * weight[0] + resbgr[1] * weight[1] + resbgr[2] * weight[2]
+        res = (
+            resbgr[0] * weight[0]
+            + resbgr[1] * weight[1]
+            + resbgr[2] * weight[2]
+        )
     else:
         s_gray = cv2.cvtColor(im_search, cv2.COLOR_BGR2GRAY)
         i_gray = cv2.cvtColor(im_source, cv2.COLOR_BGR2GRAY)
@@ -204,8 +210,12 @@ def find_all_sift(im_source, im_search, min_match_count=4, maxcnt=0):
         if len(good) < min_match_count:
             break
 
-        sch_pts = np.float32([kp_sch[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
-        img_pts = np.float32([kp_src[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+        sch_pts = np.float32([kp_sch[m.queryIdx].pt for m in good]).reshape(
+            -1, 1, 2
+        )
+        img_pts = np.float32([kp_src[m.trainIdx].pt for m in good]).reshape(
+            -1, 1, 2
+        )
 
         # M是转化矩阵
         M, mask = cv2.findHomography(sch_pts, img_pts, cv2.RANSAC, 5.0)
@@ -213,9 +223,9 @@ def find_all_sift(im_source, im_search, min_match_count=4, maxcnt=0):
 
         # 计算四个角矩阵变换后的坐标，也就是在大图中的坐标
         h, w = im_search.shape[:2]
-        pts = np.float32([[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]).reshape(
-            -1, 1, 2
-        )
+        pts = np.float32(
+            [[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]
+        ).reshape(-1, 1, 2)
         dst = cv2.perspectiveTransform(pts, M)
 
         # trans numpy arrary to python list

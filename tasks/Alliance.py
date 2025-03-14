@@ -12,7 +12,7 @@ class Alliance(Task):
 
     def do(self, next_task=TaskName.MATERIALS):
         super().set_text(title="Alliance", remove=True)
-        alliance_btn_pos = (1030, 670)
+        alliance_btn_pos = (970, 630)
         try:
             for name in ["HELP", "GIFTS", "TERRITORY", "TECHNOLOGY"]:
                 super().set_text(insert="Open alliance")
@@ -23,18 +23,18 @@ class Alliance(Task):
 
                 if name == "HELP":
                     super().set_text(insert="Help Alliance")
-                    super().tap(1020, 400)  # enter the help page
+                    super().tap(941, 406)  # enter the help page
                     super().tap(
                         650, 650
                     )  # tap the help button if present, otherwise it will tap on empty space
 
                 elif name == "GIFTS":
                     super().set_text(insert="Claim gift")
-                    gifts_pos = (885, 560)
-                    rate_pos = (930, 205)
+                    gifts_pos = (1058, 400)
+                    rate_pos = (981, 283)
                     normal_pos = (670, 205)
-                    claim_all_pos = (1110, 205)
-                    treasure = (330, 410)
+                    claim_all_pos = (1108, 202)
+                    treasure = (332, 438)
                     x, y = gifts_pos
                     super().tap(x, y, 2)
 
@@ -64,8 +64,8 @@ class Alliance(Task):
 
                 elif name == "TERRITORY":
                     super().set_text(insert="Claim resource")
-                    territory_pos = (885, 405)
-                    claim_pos = (1020, 140)
+                    territory_pos = (827, 397)
+                    claim_pos = (1028, 138)
                     x, y = territory_pos
                     super().tap(x, y, 2)
                     x, y = claim_pos
@@ -73,7 +73,7 @@ class Alliance(Task):
 
                 elif name == "TECHNOLOGY":
                     super().set_text(insert="Donate technology")
-                    technology_pos = (760, 560)
+                    technology_pos = (699, 555)
                     x, y = technology_pos
                     super().tap(x, y, 5)
                     _, _, recommend_image_pos = self.gui.check_any(
@@ -90,7 +90,9 @@ class Alliance(Task):
                             for i in range(20):
                                 super().tap(x, y, 0.03)
                     else:
-                        super().set_text(insert="Cannot found Officer's Recommendation")
+                        super().set_text(
+                            insert="Cannot found Officer's Recommendation"
+                        )
 
         except Exception as e:
             traceback.print_exc()

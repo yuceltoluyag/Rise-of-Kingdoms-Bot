@@ -11,7 +11,7 @@ class SunsetCanyon(Task):
 
     def do(self, next_task=TaskName.MYSTERY_MERCHANT.value):
         self.set_text(title="Sunset Canyon", remove=True)
-        campaign_btn_pos = (830, 670)
+        campaign_btn_pos = (730, 665)
         self.back_to_home_gui()
         self.menu_should_open(True)
         x, y = campaign_btn_pos

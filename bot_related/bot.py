@@ -53,7 +53,9 @@ class Bot:
 
         # get screen resolution
         str = device.shell("wm size").replace("\n", "")
-        height, width = list(map(int, str[(str.find(":") + 1) : len(str)].split("x")))
+        height, width = list(
+            map(int, str[(str.find(":") + 1) : len(str)].split("x"))
+        )
         self.resolution = {"height": height, "width": width}
 
         self.building_pos = {}
@@ -140,7 +142,9 @@ class Bot:
                 self.task.get_curr_gui_name()
             except Exception as e:
                 traceback.print_exc()
-                self.task.set_text(insert="cannot pass verification - stopping bot now")
+                self.task.set_text(
+                    insert="cannot pass verification - stopping bot now"
+                )
                 self.stop()
 
             random.shuffle(tasks)
@@ -162,7 +166,9 @@ class Bot:
                 self.task.set_text(
                     insert="building positions not saved - recalculating"
                 )
-                curr_task = self.locate_building_task.do(next_task=TaskName.COLLECTING)
+                curr_task = self.locate_building_task.do(
+                    next_task=TaskName.COLLECTING
+                )
             elif (
                 curr_task == TaskName.BREAK
                 and self.config.enableBreak
@@ -179,7 +185,8 @@ class Bot:
                 else:
                     if (
                         getattr(self.config, task[1])
-                        and self.round_count % getattr(self.config, task[2]) == 0
+                        and self.round_count % getattr(self.config, task[2])
+                        == 0
                     ):
                         curr_task = task[0].do()
 

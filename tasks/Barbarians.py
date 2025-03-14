@@ -1,9 +1,16 @@
 import traceback
 import random
 import time
+import os
+import numpy as np
+import cv2
 
-from filepath.constants import DEFEAT_MAIL, VICTORY_MAIL, WINDOW
-from filepath.file_relative_paths import ImagePathAndProps
+from filepath.constants import DEFEAT_MAIL, VICTORY_MAIL, WINDOW, MAP
+from filepath.file_relative_paths import (
+    BuffsImageAndProps,
+    ItemsImageAndProps,
+    ImagePathAndProps,
+)
 from tasks.constants import TaskName
 from tasks.Task import Task
 
@@ -11,6 +18,26 @@ from tasks.Task import Task
 class Barbarians(Task):
     def __init__(self, bot):
         super().__init__(bot)
+        # Debug klasörünü oluştur
+        self.debug_dir = "debug_images"
+        if not os.path.exists(self.debug_dir):
+            os.makedirs(self.debug_dir)
+
+    def save_debug_image(self, prefix):
+        try:
+            # Dosya adını oluştur
+            filename = f"{prefix}.png"
+            # Tam dosya yolunu oluştur
+            filepath = os.path.join(self.debug_dir, filename)
+            # Ekran görüntüsünü kaydet
+            screen_img = self.gui.get_curr_device_screen_img_byte_array()
+            with open(filepath, "wb") as f:
+                f.write(screen_img)
+            print(f"Debug: Ekran görüntüsü kaydedildi: {filepath}")
+            return filepath
+        except Exception as e:
+            print(f"Debug: Ekran görüntüsü kaydedilirken hata oluştu: {str(e)}")
+            return None
 
     def do(self, next_task=TaskName.GATHER):
         icon_pos = (255, 640)
@@ -71,22 +98,44 @@ class Barbarians(Task):
                 self.hold_pos_after_attack(self.bot.config.holdPosition)
 
                 # tap attack button
-                _, _, atk_btn_pos = self.gui.check_any(
+                found, _, atk_btn_pos = self.gui.check_any(
                     ImagePathAndProps.ATTACK_BUTTON_POS_IMAGE_PATH.value
                 )
+
+                if not found or atk_btn_pos is None:
+                    self.set_text(
+                        insert="Attack button not found, trying again..."
+                    )
+                    print(
+                        "Debug: Saldırı butonu bulunamadı, tekrar deneniyor..."
+                    )
+                    # Ekran görüntüsünü kaydet
+                    self.save_debug_image("attack_button_not_found")
+                    continue
+
                 x, y = atk_btn_pos
                 super().tap(x, y, 3)
 
                 if not self.bot.config.holdPosition or is_in_city:
                     # tap on new troop
-                    has_new_troops_btn, _, new_troop_btn_pos = self.gui.check_any(
-                        ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                    has_new_troops_btn, _, new_troop_btn_pos = (
+                        self.gui.check_any(
+                            ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                        )
                     )
-                    if not has_new_troops_btn:
-                        super().set_text(insert="Not more space for march")
+
+                    if not has_new_troops_btn or new_troop_btn_pos is None:
+                        self.set_text(
+                            insert="New troops button not found, stopping task..."
+                        )
+                        print(
+                            "Debug: Yeni birlik butonu bulunamadı, görev sonlandırılıyor..."
+                        )
+                        # Ekran görüntüsünü kaydet
+                        self.save_debug_image("new_troops_button_not_found")
                         return next_task
-                    x, y = new_troop_btn_pos
-                    super().tap(x, y, 2)
+
+                    super().tap(new_troop_btn_pos[0], new_troop_btn_pos[1], 2)
 
                     # select saves
                     self.select_save_blue_one()
@@ -139,13 +188,17 @@ class Barbarians(Task):
                 if battle_result is None:
                     break
                 elif battle_result == DEFEAT_MAIL:
-                    if not self.wait_for_commander_back_to_city(commander_cv_img):
+                    if not self.wait_for_commander_back_to_city(
+                        commander_cv_img
+                    ):
                         break
                     is_in_city = True
                     continue
                 elif battle_result == VICTORY_MAIL:
                     if not self.bot.config.holdPosition:
-                        if not self.wait_for_commander_back_to_city(commander_cv_img):
+                        if not self.wait_for_commander_back_to_city(
+                            commander_cv_img
+                        ):
                             break
                         is_in_city = True
                     else:
@@ -219,7 +272,9 @@ class Barbarians(Task):
 
             if curr_lv == -1:
                 super().set_text(
-                    insert="Fail to read current level, set to lv.1".format(curr_lv)
+                    insert="Fail to read current level, set to lv.1".format(
+                        curr_lv
+                    )
                 )
                 x, y = min_pos
                 super().tap(x, y, 1)
@@ -308,7 +363,9 @@ class Barbarians(Task):
                 index=0,
             )
             if found:
-                super().set_text(insert="Victory" if name == VICTORY_MAIL else "Defeat")
+                super().set_text(
+                    insert="Victory" if name == VICTORY_MAIL else "Defeat"
+                )
                 return name
             elif time_eclipsed >= self.bot.config.timeout:
                 super().set_text(insert="Timeout! Stop Task")

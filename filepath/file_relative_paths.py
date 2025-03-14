@@ -236,7 +236,7 @@ class ImagePathAndProps(Enum):
         "resource\\resource_gather_button.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         RESOURCE_GATHER,
     ]
@@ -244,7 +244,7 @@ class ImagePathAndProps(Enum):
         "resource\\new_troops_button.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         NEW_TROOPS,
     ]
@@ -688,6 +688,22 @@ class ImagePathAndProps(Enum):
         25,
         ITEM_EXCESS_RESOURCE_PROMPT_NO,
     ]
+    ALL_ARMIES_BUSY_IMAGE_PATH1 = [
+        "resource\\AllArmiesBusy1.png",
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.70,
+        25,
+        "ALL_ARMIES_BUSY1",
+    ]
+    ALL_ARMIES_BUSY_IMAGE_PATH2 = [
+        "resource\\AllArmiesBusy2.png",
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.70,
+        25,
+        "ALL_ARMIES_BUSY2",
+    ]
 
 
 class GuiCheckImagePathAndProps(Enum):
@@ -731,4 +747,22 @@ GuiCheckImagePathAndPropsOrdered = [
     GuiCheckImagePathAndProps.MAP_BUTTON_IMG_PATH,
     GuiCheckImagePathAndProps.HOME_BUTTON_IMG_PATH,
     GuiCheckImagePathAndProps.WINDOW_IMG_PATH,
+]
+
+ALL_ARMIES_BUSY_IMAGE_PATH1 = [
+    "resource\\AllArmiesBusy1.png",
+    (1280, 720),
+    (0, 0, 0, 0),
+    0.70,
+    25,
+    "ALL_ARMIES_BUSY1",
+]
+
+ALL_ARMIES_BUSY_IMAGE_PATH2 = [
+    "resource\\AllArmiesBusy2.png",
+    (1280, 720),
+    (0, 0, 0, 0),
+    0.70,
+    25,
+    "ALL_ARMIES_BUSY2",
 ]

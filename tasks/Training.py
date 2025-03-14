@@ -56,7 +56,9 @@ class Training(Task):
                     BuildingNames.SIEGE_WORKSHOP.value,
                 ],
             ]:
-                super().set_text(insert="Train or upgrade troops({})".format(config[4]))
+                super().set_text(
+                    insert="Train or upgrade troops({})".format(config[4])
+                )
                 super().back_to_home_gui()
                 upgraded = False
                 x, y = config[3]
@@ -74,12 +76,14 @@ class Training(Task):
                 if config[2] != TrainingAndUpgradeLevel.DISABLED.value:
                     max = (
                         config[2]
-                        if config[2] != TrainingAndUpgradeLevel.UPGRADE_ALL.value
+                        if config[2]
+                        != TrainingAndUpgradeLevel.UPGRADE_ALL.value
                         else TrainingAndUpgradeLevel.T4.value
                     )
                     min = (
                         config[2] - 1
-                        if config[2] != TrainingAndUpgradeLevel.UPGRADE_ALL.value
+                        if config[2]
+                        != TrainingAndUpgradeLevel.UPGRADE_ALL.value
                         else -1
                     )
                     for i in range(max, min, -1):
@@ -90,7 +94,10 @@ class Training(Task):
                             ImagePathAndProps.TRAINING_UPGRADE_BUTTON_IMAGE_PATH.value
                         )
                         if pos is None:
-                            if config[2] != TrainingAndUpgradeLevel.UPGRADE_ALL.value:
+                            if (
+                                config[2]
+                                != TrainingAndUpgradeLevel.UPGRADE_ALL.value
+                            ):
                                 break
                             else:
                                 continue

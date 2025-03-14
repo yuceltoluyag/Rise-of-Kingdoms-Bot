@@ -11,7 +11,7 @@ class LostCanyon(Task):
 
     def do(self, next_task=TaskName.MYSTERY_MERCHANT.value):
         self.set_text(title="Lost Canyon", remove=True)
-        campaign_btn_pos = (830, 670)
+        campaign_btn_pos = (730, 665)
         self.back_to_home_gui()
         self.menu_should_open(True)
         x, y = campaign_btn_pos
@@ -30,7 +30,7 @@ class LostCanyon(Task):
 
         # Click on rewards
         self.set_text(insert="Get Rewards")
-        self.tap(1015, 120, 1)
+        self.tap(1012, 121, 1)
         while True:
             self.tap(640, 650, 1)
             attempts = self.gui.lost_canyon_attempts_image_to_string()

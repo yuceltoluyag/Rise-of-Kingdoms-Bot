@@ -1,4 +1,8 @@
 import traceback
+import os
+import cv2
+import numpy as np
+from datetime import datetime
 
 from filepath.constants import MAP
 from filepath.file_relative_paths import (
@@ -8,12 +12,146 @@ from filepath.file_relative_paths import (
 )
 from tasks.Task import Task
 from tasks.constants import TaskName, Resource
+from utils import resource_path
 
 
 class GatherResource(Task):
     def __init__(self, bot):
         super().__init__(bot)
         self.max_query_space = 5
+        # Debug klasörünü oluştur
+        self.debug_dir = "debug_images"
+        if not os.path.exists(self.debug_dir):
+            os.makedirs(self.debug_dir)
+
+    def save_debug_image(self, prefix):
+        try:
+            # Tarih ve saat bilgisini al
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            # Dosya adını oluştur
+            filename = f"{prefix}_{timestamp}.png"
+            # Tam dosya yolunu oluştur
+            filepath = os.path.join(self.debug_dir, filename)
+            # Ekran görüntüsünü kaydet
+            screen_img = self.gui.get_curr_device_screen_img_byte_array()
+            with open(filepath, "wb") as f:
+                f.write(screen_img)
+            print(f"Debug: Ekran görüntüsü kaydedildi: {filepath}")
+            return filepath
+        except Exception as e:
+            print(f"Debug: Ekran görüntüsü kaydedilirken hata oluştu: {str(e)}")
+            return None
+
+    def create_reference_image(self, x, y, width, height, output_path):
+        """
+        Ekran görüntüsünden belirli bir bölgeyi keserek referans görüntü oluşturur
+
+        Args:
+            x, y: Kesilen bölgenin sol üst köşesinin koordinatları
+            width, height: Kesilen bölgenin genişliği ve yüksekliği
+            output_path: Kaydedilecek dosyanın yolu
+        """
+        try:
+            # Ekran görüntüsünü al
+            screen_img = self.gui.get_curr_device_screen_img_byte_array()
+            # NumPy dizisine dönüştür
+            np_arr = np.frombuffer(screen_img, np.uint8)
+            # OpenCV ile görüntüyü oku
+            img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            # Belirtilen bölgeyi kes
+            cropped = img[y : y + height, x : x + width]
+            # Dosyaya kaydet
+            cv2.imwrite(output_path, cropped)
+            print(f"Debug: Referans görüntü oluşturuldu: {output_path}")
+            return True
+        except Exception as e:
+            print(
+                f"Debug: Referans görüntü oluşturulurken hata oluştu: {str(e)}"
+            )
+            return False
+
+    def is_dispatch_screen_visible(self):
+        """
+        Ekranda "Dispatch a new troop from your city" yazısının olup olmadığını kontrol eder
+
+        Returns:
+            bool: Yazı varsa True, yoksa False
+        """
+        try:
+            # Ekran görüntüsünü al
+            screen_img = self.gui.get_curr_device_screen_img_byte_array()
+            # NumPy dizisine dönüştür
+            np_arr = np.frombuffer(screen_img, np.uint8)
+            # OpenCV ile görüntüyü oku
+            img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+            # Dispatch yazısının olduğu bölgeyi kes (yaklaşık koordinatlar)
+            # Gönderdiğiniz ekran görüntüsüne göre ayarlandı
+            x, y, width, height = 930, 65, 200, 25
+            dispatch_region = img[y : y + height, x : x + width]
+
+            # Debug için kaydet
+            cv2.imwrite("debug_images/dispatch_region.png", dispatch_region)
+
+            # Basit bir kontrol: Bölgede açık renkli piksel sayısı
+            # Dispatch yazısı açık renkli olduğu için, belirli bir eşiğin üzerinde açık piksel varsa
+            # yazının görünür olduğunu varsayabiliriz
+            gray = cv2.cvtColor(dispatch_region, cv2.COLOR_BGR2GRAY)
+            _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
+            white_pixel_count = cv2.countNonZero(binary)
+
+            # Eşik değeri (deneysel olarak ayarlanabilir)
+            threshold = 100
+
+            print(
+                f"Debug: Dispatch bölgesindeki açık piksel sayısı: {white_pixel_count}"
+            )
+            return white_pixel_count > threshold
+
+        except Exception as e:
+            print(f"Debug: Dispatch ekranı kontrolünde hata: {str(e)}")
+            return False  # Hata durumunda False döndür
+
+    def is_all_armies_busy(self):
+        """
+        Tüm birliklerin meşgul olup olmadığını kontrol eder
+
+        Returns:
+            bool: Tüm birlikler meşgulse True, değilse False
+        """
+        try:
+            # Doğrudan AllArmiesBusy1.png ve AllArmiesBusy2.png dosyalarını kullanarak kontrol et
+            check_result1 = self.gui.check_any(
+                ImagePathAndProps.ALL_ARMIES_BUSY_IMAGE_PATH1.value
+            )
+
+            check_result2 = self.gui.check_any(
+                ImagePathAndProps.ALL_ARMIES_BUSY_IMAGE_PATH2.value
+            )
+
+            # Debug için ekran görüntüsünü kaydet
+            if check_result1[0] or check_result2[0]:
+                debug_img_path = self.save_debug_image(
+                    "all_armies_busy_detected"
+                )
+                print(
+                    f"Debug: Tüm birlikler meşgul tespit edildi! Görüntü: {debug_img_path}"
+                )
+
+                if check_result1[0]:
+                    print("Debug: AllArmiesBusy1.png eşleşti")
+                if check_result2[0]:
+                    print("Debug: AllArmiesBusy2.png eşleşti")
+
+                return True
+
+            return False
+
+        except Exception as e:
+            print(
+                f"Debug: Tüm birliklerin meşgul olup olmadığı kontrolünde hata: {str(e)}"
+            )
+            return False  # Hata durumunda False döndür
 
     def do(self, next_task=TaskName.BREAK):
         magnifier_pos = (60, 540)
@@ -132,25 +270,109 @@ class GatherResource(Task):
                         continue
                 last_resource_pos.append(new_resource_pos)
                 should_decreasing_lv = False
+
+                # Tüm birliklerin meşgul olup olmadığını kontrol et (GATHER butonuna tıklamadan önce)
+                if self.is_all_armies_busy():
+                    self.set_text(insert="All armies are busy, stopping task")
+                    print("Debug: Tüm birlikler meşgul, görev sonlandırılıyor")
+                    self.save_debug_image("all_armies_busy_before_gather")
+                    return next_task
+
+                # Önce normal yöntemle deneyelim
                 check_result = self.gui.check_any(
                     ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
                 )
-                if not check_result[0]:  # if not found
-                    self.set_text(insert="Gather button not found")
-                    continue
-                gather_button_pos = check_result[2]
-                self.tap(gather_button_pos[0], gather_button_pos[1], 2)
+
+                # Eğer bulunamazsa, alternatif yöntem kullanarak GATHER butonunu bulmaya çalışalım
+                if not check_result[0]:
+                    self.set_text(
+                        insert="Trying alternative method to find gather button"
+                    )
+                    print("Debug: Alternatif yöntem deneniyor...")
+
+                    # Ekran görüntüsünü kaydet
+                    debug_img_path = self.save_debug_image(
+                        "gather_button_screen"
+                    )
+
+                    # Yeni bir referans görüntü oluştur (GATHER butonu için)
+                    # Gönderdiğiniz ekran görüntüsünde GATHER butonu yaklaşık olarak bu koordinatlarda
+                    ref_img_path = "resource/resource_gather_button_new.png"
+                    self.create_reference_image(
+                        850, 480, 200, 40, resource_path(ref_img_path)
+                    )
+
+                    # Yeni oluşturulan referans görüntüyü kullanarak tekrar dene
+                    # Sabit koordinatları kullan (ekran görüntüsünden)
+                    gather_button_pos = (950, 500)  # GATHER butonunun merkezi
+                    self.tap(gather_button_pos[0], gather_button_pos[1], 2)
+                else:
+                    gather_button_pos = check_result[2]
+                    self.tap(gather_button_pos[0], gather_button_pos[1], 2)
+
+                # Tüm birliklerin meşgul olup olmadığını kontrol et
+                if self.is_all_armies_busy():
+                    self.set_text(insert="All armies are busy, stopping task")
+                    print("Debug: Tüm birlikler meşgul, görev sonlandırılıyor")
+                    self.save_debug_image("all_armies_busy")
+                    return next_task
+
                 check_result = self.gui.check_any(
                     ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
                 )
-                if not check_result[0]:  # if not found
-                    self.set_text(insert="Not more space for march")
-                    return next_task
-                new_troops_button_pos = check_result[2]
-                self.tap(new_troops_button_pos[0], new_troops_button_pos[1], 2)
+
+                # Eğer bulunamazsa, alternatif yöntem kullanarak NEW_TROOPS butonunu bulmaya çalışalım
+                if not check_result[0]:
+                    self.set_text(
+                        insert="Trying alternative method to find new troops button"
+                    )
+                    print(
+                        "Debug: Yeni birlik butonu için alternatif yöntem deneniyor..."
+                    )
+
+                    # Ekran görüntüsünü kaydet
+                    debug_img_path = self.save_debug_image(
+                        "new_troops_button_screen"
+                    )
+
+                    # Ekran görüntüsünde "Dispatch a new troop from your city" yazısı varsa, NEW_TROOPS butonunu kullanabiliriz
+                    # Yoksa, muhtemelen daha fazla yürüyüş alanı yok
+
+                    # Yeni bir referans görüntü oluştur (NEW_TROOPS butonu için)
+                    ref_img_path = "resource/new_troops_button_new.png"
+                    self.create_reference_image(
+                        940, 145, 200, 40, resource_path(ref_img_path)
+                    )
+
+                    # Sabit koordinatları kullan (ekran görüntüsünden)
+                    # Eğer "New Troop" butonu görünüyorsa tıkla, yoksa görevi sonlandır
+                    if self.is_dispatch_screen_visible():
+                        new_troops_button_pos = (
+                            1010,
+                            145,
+                        )  # NEW_TROOPS butonunun merkezi
+                        self.tap(
+                            new_troops_button_pos[0],
+                            new_troops_button_pos[1],
+                            2,
+                        )
+                    else:
+                        self.set_text(insert="Not more space for march")
+                        print(
+                            "Debug: Yeni birlik butonu bulunamadı ve dispatch ekranı görünmüyor"
+                        )
+                        print("Debug: Ekran görüntüsü kaydediliyor...")
+                        self.save_debug_image("new_troops_button_not_found")
+                        return next_task
+                else:
+                    new_troops_button_pos = check_result[2]
+                    self.tap(
+                        new_troops_button_pos[0], new_troops_button_pos[1], 2
+                    )
+
                 if self.bot.config.gatherResourceNoSecondaryCommander:
                     self.set_text(insert="Remove secondary commander")
-                    self.tap(473, 501, 0.5)
+                    self.tap(473, 462, 0.5)
                 match_button_pos = self.gui.check_any(
                     ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
                 )[2]

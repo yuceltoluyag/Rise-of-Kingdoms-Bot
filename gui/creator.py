@@ -44,7 +44,9 @@ def checkbox_fn_creator(name, text):
             write_bot_config(app.bot_config, app.device.save_file_prefix)
             on_click(variable.get())
 
-        checkbox = Checkbutton(parent, text=text, variable=variable, command=command)
+        checkbox = Checkbutton(
+            parent, text=text, variable=variable, command=command
+        )
         return checkbox, variable
 
     return title_checkbox
@@ -66,7 +68,11 @@ def entry_int_fn_creator(name, begin_text, end_text=None):
                         return False
                     if value[0] == "0":
                         return False
-                setattr(app.bot_config, attr_name, int(value if value != "" else "1"))
+                setattr(
+                    app.bot_config,
+                    attr_name,
+                    int(value if value != "" else "1"),
+                )
                 write_bot_config(app.bot_config, app.device.save_file_prefix)
                 return True
 
@@ -82,7 +88,9 @@ def entry_int_fn_creator(name, begin_text, end_text=None):
         entry.grid(row=0, column=1, sticky=N + W, padx=5)
 
         if end_text is not None:
-            Label(frame, text=end_text).grid(row=0, column=2, sticky=N + W, padx=5)
+            Label(frame, text=end_text).grid(
+                row=0, column=2, sticky=N + W, padx=5
+            )
 
         return frame, None
 
@@ -94,10 +102,15 @@ def train_fn_creator(name, train_attr_name, upgrade_attr_name):
     lv_upgrade_options = ["1", "2", "3", "4", "5", "All", "Disabled"]
 
     def num_to_option_value(num):
-        return str(num + 1 if 0 <= num <= 4 else "All" if num == 5 else "Disable")
+        return str(
+            num + 1 if 0 <= num <= 4 else "All" if num == 5 else "Disable"
+        )
 
     def option_value_to_num(v):
-        return int(v if v != "All" and v != "Disable" else 6 if v == "All" else 0) - 1
+        return (
+            int(v if v != "All" and v != "Disable" else 6 if v == "All" else 0)
+            - 1
+        )
 
     def train(app, parent):
         frame = Frame(parent)
@@ -181,14 +194,13 @@ def load_building_pos(prefix):
     try:
         ensure_save_folder_exists()
         building_pos_file_path = resource_path(
-            FilePaths.SAVE_FOLDER_PATH.value + "{}_building_pos.json".format(prefix)
+            FilePaths.SAVE_FOLDER_PATH.value
+            + "{}_building_pos.json".format(prefix)
         )
 
         if not os.path.exists(building_pos_file_path):
             # Dosya yoksa, örnek bir building_pos oluştur
-            building_pos = (
-                None  # İlgili yapının ne olduğuna bağlı olarak örnek içeriği düzenleyin
-            )
+            building_pos = None  # İlgili yapının ne olduğuna bağlı olarak örnek içeriği düzenleyin
             write_building_pos(building_pos, prefix)
         else:
             with open(building_pos_file_path) as f:
@@ -202,7 +214,8 @@ def load_building_pos(prefix):
 def write_building_pos(building_pos, prefix):
     with open(
         resource_path(
-            FilePaths.SAVE_FOLDER_PATH.value + "{}_building_pos.json".format(prefix)
+            FilePaths.SAVE_FOLDER_PATH.value
+            + "{}_building_pos.json".format(prefix)
         ),
         "w",
     ) as f:

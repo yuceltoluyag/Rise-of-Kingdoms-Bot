@@ -9,7 +9,7 @@ from tasks.constants import TaskName
 class Items(Task):
     def __init__(self, bot):
         super().__init__(bot)
-        self.items_btn_pos = (925, 670)
+        self.items_btn_pos = (827, 670)
         self.resources_btn_pos = (250, 80)
         self.speedups_btn_pos = (430, 80)
         self.boosts_btn_pos = (610, 80)

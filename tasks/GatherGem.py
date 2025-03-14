@@ -72,7 +72,9 @@ class GatherGem(Task):
                     self.set_text(insert="Found gem pot")
                     # Tap on the gem mine
                     self.tap(gempost[0], gempost[1], 2)
-                    new_resource_pos = self.gui.resource_location_image_to_string()
+                    new_resource_pos = (
+                        self.gui.resource_location_image_to_string()
+                    )
                     if new_resource_pos in last_resource_pos:
                         self.set_text(insert="Same node of gem")
                         # Same node, move the screen
@@ -96,10 +98,16 @@ class GatherGem(Task):
                             self.set_text(insert="Not more space for march")
                             return next_task
                         new_troops_button_pos = pos
-                        self.tap(new_troops_button_pos[0], new_troops_button_pos[1], 2)
-                        if True:  # self.bot.config.gatherResourceNoSecondaryCommander:
+                        self.tap(
+                            new_troops_button_pos[0],
+                            new_troops_button_pos[1],
+                            2,
+                        )
+                        if (
+                            True
+                        ):  # self.bot.config.gatherResourceNoSecondaryCommander:
                             self.set_text(insert="Remove secondary commander")
-                            self.tap(473, 501, 0.5)
+                            self.tap(473, 462, 0.5)
                         # Send match
                         match_button_pos = self.gui.check_any(
                             ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value

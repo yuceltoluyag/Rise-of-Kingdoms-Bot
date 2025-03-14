@@ -51,7 +51,9 @@ class GuiDetector:
 
     def save_screen(self, file_name):
         image = Image.open(io.BytesIO(self.__device.screencap()))
-        image.save(resource_path(FilePaths.TEST_SRC_FOLDER_PATH.value + file_name))
+        image.save(
+            resource_path(FilePaths.TEST_SRC_FOLDER_PATH.value + file_name)
+        )
 
     def get_curr_gui_name(self):
         for image_path_and_props in GuiCheckImagePathAndPropsOrdered:
@@ -165,14 +167,18 @@ class GuiDetector:
         x0, y0, x1, y1 = (885, 190, 1035, 207)
 
         imsch = cv2.imdecode(
-            np.asarray(self.get_curr_device_screen_img_byte_array(), dtype=np.uint8),
+            np.asarray(
+                self.get_curr_device_screen_img_byte_array(), dtype=np.uint8
+            ),
             cv2.IMREAD_COLOR,
         )
         imsch = cv2.cvtColor(imsch, cv2.COLOR_BGR2GRAY)
         imsch = imsch[y0:y1, x0:x1]
         ret, imsch = cv2.threshold(imsch, 215, 255, cv2.THRESH_BINARY)
         resource_image = Image.fromarray(imsch)
-        result = "".join(c for c in img_to_string(resource_image) if c.isdigit())
+        result = "".join(
+            c for c in img_to_string(resource_image) if c.isdigit()
+        )
         return result
 
     def match_query_to_string(self):
@@ -189,7 +195,9 @@ class GuiDetector:
             imsch = imsch[y0:y1, x0:x1]
             ret, imsch = cv2.threshold(imsch, 215, 255, cv2.THRESH_BINARY)
             resource_image = Image.fromarray(imsch)
-            result = "".join(c for c in img_to_string(resource_image) if c.isdigit())
+            result = "".join(
+                c for c in img_to_string(resource_image) if c.isdigit()
+            )
             return int(result[0]), int(result[1])
         except Exception as e:
             return None, None
@@ -232,12 +240,16 @@ class GuiDetector:
             )
         )
         bot_print(
-            "Building <{}> on position [({}, {}), ({}, {})] ".format(s, x0, y0, x1, y1)
+            "Building <{}> on position [({}, {}), ({}, {})] ".format(
+                s, x0, y0, x1, y1
+            )
         )
 
     def check_any_cv2(self, *props_list):
         imsch = cv2.imdecode(
-            np.asarray(self.get_curr_device_screen_img_byte_array(), dtype=np.uint8),
+            np.asarray(
+                self.get_curr_device_screen_img_byte_array(), dtype=np.uint8
+            ),
             cv2.IMREAD_COLOR,
         )
         grimsch = cv2.cvtColor(imsch, cv2.COLOR_BGR2GRAY)
@@ -269,7 +281,9 @@ class GuiDetector:
 
     def check_any(self, *props_list):
         imsch = cv2.imdecode(
-            np.asarray(self.get_curr_device_screen_img_byte_array(), dtype=np.uint8),
+            np.asarray(
+                self.get_curr_device_screen_img_byte_array(), dtype=np.uint8
+            ),
             cv2.IMREAD_COLOR,
         )
 
@@ -278,13 +292,26 @@ class GuiDetector:
             # x0, y0, x1, y1 = box
 
             imsrc = cv2.imread(resource_path(path))
+            if imsrc is None:
+                print(f"Debug: Kaynak görüntü yüklenemedi: {path}")
+                continue
 
             result = aircv.find_template(imsrc, imsch, threshold, True)
 
             if self.debug:
-                cv2.imshow("imsrc", imsrc)
-                cv2.imshow("imsch", imsch)
+                print(f"Debug: Aranan görüntü: {path}")
+                print(f"Debug: Eşleşme eşiği: {threshold}")
+                if result is not None:
+                    print(f"Debug: Eşleşme bulundu - Konum: {result['result']}")
+                    print(f"Debug: Eşleşme güveni: {result['confidence']}")
+                else:
+                    print("Debug: Eşleşme bulunamadı")
+
+                # Görüntüleri göster
+                cv2.imshow("Aranan Görüntü", imsrc)
+                cv2.imshow("Ekran Görüntüsü", imsch)
                 cv2.waitKey(0)
+                cv2.destroyAllWindows()
 
             if result is not None:
                 return True, gui, result["result"]
@@ -294,7 +321,9 @@ class GuiDetector:
     def has_image_props(self, props):
         path, size, box, threshold, least_diff, gui = props
         imsch = cv2.imdecode(
-            np.asarray(self.get_curr_device_screen_img_byte_array(), dtype=np.uint8),
+            np.asarray(
+                self.get_curr_device_screen_img_byte_array(), dtype=np.uint8
+            ),
             cv2.IMREAD_COLOR,
         )
         imsrc = cv2.imread(resource_path(path))
@@ -304,7 +333,9 @@ class GuiDetector:
     def find_all_image_props(self, props, max_cnt=3):
         path, size, box, threshold, least_diff, gui = props
         imsch = cv2.imdecode(
-            np.asarray(self.get_curr_device_screen_img_byte_array(), dtype=np.uint8),
+            np.asarray(
+                self.get_curr_device_screen_img_byte_array(), dtype=np.uint8
+            ),
             cv2.IMREAD_COLOR,
         )
         imsrc = cv2.imread(resource_path(path))
@@ -313,7 +344,9 @@ class GuiDetector:
 
     def has_image_cv_img(self, cv_img, threshold=0.90):
         imsch = cv2.imdecode(
-            np.asarray(self.get_curr_device_screen_img_byte_array(), dtype=np.uint8),
+            np.asarray(
+                self.get_curr_device_screen_img_byte_array(), dtype=np.uint8
+            ),
             cv2.IMREAD_COLOR,
         )
         result = aircv.find_template(cv_img, imsch, threshold, True)
@@ -326,7 +359,9 @@ class GuiDetector:
         """
         x0, y0, x1, y1 = box
         img = cv2.imdecode(
-            np.asarray(self.get_curr_device_screen_img_byte_array(), dtype=np.uint8),
+            np.asarray(
+                self.get_curr_device_screen_img_byte_array(), dtype=np.uint8
+            ),
             cv2.IMREAD_COLOR,
         )
         return img[y0:y1, x0:x1]

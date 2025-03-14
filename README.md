@@ -1,19 +1,23 @@
 ![issues](https://img.shields.io/github/issues/yuceltoluyag/Rise-of-Kingdoms-Bot)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 ![forks](https://img.shields.io/github/forks/yuceltoluyag/Rise-of-Kingdoms-Bot)
 ![stars](https://img.shields.io/github/stars/yuceltoluyag/Rise-of-Kingdoms-Bot)
 ![lincense](https://img.shields.io/github/license/yuceltoluyag/Rise-of-Kingdoms-Bot)
-[![CodeQL Advanced](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/codeql.yml/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/codeql.yml) [![CodeQL](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/github-code-scanning/codeql)  [![Dependabot Updates](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/dependabot/dependabot-updates) [![first-interaction](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/greetings.yml/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/greetings.yml)
+[![CodeQL Advanced](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/codeql.yml/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/codeql.yml) [![CodeQL](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/github-code-scanning/codeql) [![Dependabot Updates](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/actions/workflows/dependabot/dependabot-updates)
 
 - [**Introduction**](#rise-of-kingdom-bot)
-    + [Requirements](#requirements)
-    + [Functions](#functions)
+  - [Requirements](#requirements)
+  - [Functions](#functions)
 - [Can it do captcha?](#can-it-do-captcha-)
-    + [Set Up](#set-up)
-    + [Configurations](#configurations)
-    + [Show case](#show-case)
+  - [Set Up](#set-up)
+  - [Configurations](#configurations)
+  - [Show case](#show-case)
   * [WARNING](#warning)
 - [Disclaimer](#disclaimer)
 
@@ -151,7 +155,7 @@ Disclaimer:
 ```python
 import disclaimer
 """
-  We are not responsible for banned account or any other punishment by this game's GM. 
+  We are not responsible for banned account or any other punishment by this game's GM.
   Please do some research if you have any concerns about features included in this repo
   before using it! YOU are choosing to use these scripts, and if
   you point the finger at us for messing up your account, we will laugh at you.

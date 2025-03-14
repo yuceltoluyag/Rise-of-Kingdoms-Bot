@@ -12,8 +12,8 @@ class Scout(Task):
     def do(self, next_task=TaskName.BREAK):
         try:
             self.set_text(title="Auto Scout")
-            mail_pos = [1230, 570]
-            report_pos = [250, 45]
+            mail_pos = [1130, 670]
+            report_pos = [263, 42]
             center_pos = (640, 320)
 
             idx = 0
@@ -34,7 +34,9 @@ class Scout(Task):
                 if found:
                     if (
                         name
-                        == ImagePathAndProps.MAIL_EXPLORATION_REPORT_IMAGE_PATH.value[5]
+                        == ImagePathAndProps.MAIL_EXPLORATION_REPORT_IMAGE_PATH.value[
+                            5
+                        ]
                     ):
                         x, y = pos
                         self.tap(x, y, 2)
@@ -74,7 +76,10 @@ class Scout(Task):
                 else:
                     continue
 
-                if name == ImagePathAndProps.INVESTIGATE_BUTTON_IMAGE_PATH.value[5]:
+                if (
+                    name
+                    == ImagePathAndProps.INVESTIGATE_BUTTON_IMAGE_PATH.value[5]
+                ):
                     found, name, pos = self.gui.check_any(
                         ImagePathAndProps.SCOUT_IDLE_ICON_IMAGE_PATH.value,
                         ImagePathAndProps.SCOUT_ZZ_ICON_IMAGE_PATH.value,
@@ -107,7 +112,9 @@ class Scout(Task):
 
                 # open scout interface
                 self.set_text(insert="tap scout camp")
-                scout_camp_pos = self.bot.building_pos[BuildingNames.SCOUT_CAMP.value]
+                scout_camp_pos = self.bot.building_pos[
+                    BuildingNames.SCOUT_CAMP.value
+                ]
                 x, y = scout_camp_pos
                 self.tap(x, y, 1)
 
