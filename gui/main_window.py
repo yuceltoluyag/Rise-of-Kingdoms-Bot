@@ -31,13 +31,17 @@ class MainWindow:
 
         self.notebook = Notebook(self.window, height=self.size[1] - 80)
 
-        main_frame = Frame(self.notebook, width=self.size[0], height=self.size[1])
+        main_frame = Frame(
+            self.notebook, width=self.size[0], height=self.size[1]
+        )
 
         dlf = DeviceListFrame(
             self.notebook, main_frame, width=self.size[0], height=self.size[1]
         )
 
-        sf = SettingFrame(self.notebook, width=self.size[0], height=self.size[1])
+        sf = SettingFrame(
+            self.notebook, width=self.size[0], height=self.size[1]
+        )
         self.setting_frame = sf
         sf.grid(row=0, column=0, sticky=N + W)
         sf.grid_propagate(False)

@@ -1,9 +1,9 @@
 import traceback
-
 from filepath.file_relative_paths import ImagePathAndProps
 from tasks.Task import Task
-
 from tasks.constants import TaskName
+import random
+import time
 
 
 class Alliance(Task):
@@ -13,6 +13,12 @@ class Alliance(Task):
     def do(self, next_task=TaskName.MATERIALS):
         super().set_text(title="Alliance", remove=True)
         alliance_btn_pos = (970, 630)
+
+        # Debug modu kontrolü
+        if self.debug_mode:
+            print("Debug: Alliance gorevi baslatiliyor")
+            print("Debug: Alliance buton pozisyonu:", alliance_btn_pos)
+
         try:
             for name in ["HELP", "GIFTS", "TERRITORY", "TECHNOLOGY"]:
                 super().set_text(insert="Open alliance")
@@ -43,11 +49,24 @@ class Alliance(Task):
                     x, y = rate_pos
                     super().tap(x, y, 1)
                     for i in range(20):
-                        _, _, pos = self.gui.check_any(
-                            ImagePathAndProps.GIFTS_CLAIM_BUTTON_IMAGE_PATH.value
-                        )
-                        if pos is None:
-                            break
+                        # Debug modu aktifse debug_check_any kullan
+                        if self.debug_mode:
+                            _, _, pos = self.debug_check_any(
+                                ImagePathAndProps.GIFTS_CLAIM_BUTTON_IMAGE_PATH.value
+                            )
+                            if pos is None:
+                                self.save_debug_image(
+                                    "alliance_claim_button_not_found"
+                                )
+                                break
+                        else:
+                            _, _, pos = self.gui.check_any(
+                                ImagePathAndProps.GIFTS_CLAIM_BUTTON_IMAGE_PATH.value
+                            )
+                            if pos is None:
+                                break
+
+                        # Buton bulunduysa tıkla
                         x, y = pos
                         super().tap(x, y, 0.5)
 
@@ -76,15 +95,39 @@ class Alliance(Task):
                     technology_pos = (699, 555)
                     x, y = technology_pos
                     super().tap(x, y, 5)
-                    _, _, recommend_image_pos = self.gui.check_any(
-                        ImagePathAndProps.TECH_RECOMMEND_IMAGE_PATH.value
-                    )
+
+                    # Debug modu aktifse debug_check_any kullan
+                    if self.debug_mode:
+                        _, _, recommend_image_pos = self.debug_check_any(
+                            ImagePathAndProps.TECH_RECOMMEND_IMAGE_PATH.value
+                        )
+                        if recommend_image_pos is None:
+                            self.save_debug_image(
+                                "alliance_tech_recommend_not_found"
+                            )
+                    else:
+                        _, _, recommend_image_pos = self.gui.check_any(
+                            ImagePathAndProps.TECH_RECOMMEND_IMAGE_PATH.value
+                        )
+
                     if recommend_image_pos is not None:
                         x, y = recommend_image_pos
                         super().tap(x, y + 60, 1)
-                        _, _, donate_btn_pos = self.gui.check_any(
-                            ImagePathAndProps.TECH_DONATE_BUTTON_IMAGE_PATH.value
-                        )
+
+                        # Debug modu aktifse debug_check_any kullan
+                        if self.debug_mode:
+                            _, _, donate_btn_pos = self.debug_check_any(
+                                ImagePathAndProps.TECH_DONATE_BUTTON_IMAGE_PATH.value
+                            )
+                            if donate_btn_pos is None:
+                                self.save_debug_image(
+                                    "alliance_tech_donate_button_not_found"
+                                )
+                        else:
+                            _, _, donate_btn_pos = self.gui.check_any(
+                                ImagePathAndProps.TECH_DONATE_BUTTON_IMAGE_PATH.value
+                            )
+
                         if donate_btn_pos is not None:
                             x, y = donate_btn_pos
                             for i in range(20):

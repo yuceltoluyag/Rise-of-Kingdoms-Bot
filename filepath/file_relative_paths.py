@@ -172,7 +172,7 @@ class ImagePathAndProps(Enum):
         "resource\\training_upgrade_button.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         TRAINING_UPGRADE_BUTTON,
     ]
@@ -468,7 +468,7 @@ class ImagePathAndProps(Enum):
         "resource\\explore_button.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         EXPLORE_BUTTON,
     ]
@@ -476,15 +476,23 @@ class ImagePathAndProps(Enum):
         "resource\\explore_button2.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         EXPLORE_BUTTON2,
+    ]
+    SCOUT_EXPLORE3_BUTTON_IMAGE_PATH = [
+        "resource\\explore_button3.png",
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.70,
+        25,
+        EXPLORE_BUTTON3,
     ]
     SCOUT_SEND_BUTTON_IMAGE_PATH = [
         "resource\\scout_send_button.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         SEND_BUTTON,
     ]
@@ -492,7 +500,7 @@ class ImagePathAndProps(Enum):
         "resource\\mail_exploration_report.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         MAIL_EXPLORATION_REPORT,
     ]
@@ -500,7 +508,7 @@ class ImagePathAndProps(Enum):
         "resource\\mail_scout_button.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         MAIL_SCOUT_BUTTON,
     ]
@@ -508,7 +516,7 @@ class ImagePathAndProps(Enum):
         "resource\\investigate_button.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         INVESTIGATE_BUTTON,
     ]
@@ -516,7 +524,7 @@ class ImagePathAndProps(Enum):
         "resource\\great_button.png",
         (1280, 720),
         (0, 0, 0, 0),
-        0.90,
+        0.70,
         25,
         GREAT_BUTTON,
     ]
@@ -703,6 +711,32 @@ class ImagePathAndProps(Enum):
         0.70,
         25,
         "ALL_ARMIES_BUSY2",
+    ]
+    # Mağara görselleri
+    CAVE_IMAGE_PATH = [
+        "resource\\cave.png",
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.70,
+        25,
+        "CAVE",
+    ]
+    CAVE2_IMAGE_PATH = [
+        "resource\\cave2.png",
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.70,
+        25,
+        "CAVE2",
+    ]
+    # Köy görseli
+    VILLAGE_IMAGE_PATH = [
+        "resource\\village.png",
+        (1280, 720),
+        (0, 0, 0, 0),
+        0.70,
+        25,
+        "VILLAGE",
     ]
 
 

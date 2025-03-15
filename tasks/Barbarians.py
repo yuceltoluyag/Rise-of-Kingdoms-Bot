@@ -48,6 +48,11 @@ class Barbarians(Task):
         max_lv = self.bot.config.barbariansMaxLevel
         base_lv = self.bot.config.barbariansBaseLevel
 
+        # Debug modunu etkinleştir (isteğe bağlı olarak kullanılabilir)
+        if self.bot.config.debug_mode:
+            self.enable_debug()
+            print("Barbarians görevi için debug modu etkinleştirildi")
+
         try:
             super().set_text(title="Attack Barbarians", remove=True)
             commander_cv_img = None
@@ -79,17 +84,29 @@ class Barbarians(Task):
                 self.set_barbarians_level(level)
 
                 # tap search button
-                _, _, search_pos = self.gui.check_any(
-                    ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
-                )
+                if self.debug_mode:
+                    found, _, search_pos = self.debug_check_any(
+                        ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                    )
+                else:
+                    _, _, search_pos = self.gui.check_any(
+                        ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                    )
+
                 x, y = search_pos
                 super().tap(x, y, 2)
                 x, y = center_pos
                 super().tap(x, y, 1)
 
-                found, _, _ = self.gui.check_any(
-                    ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
-                )
+                if self.debug_mode:
+                    found, _, _ = self.debug_check_any(
+                        ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                    )
+                else:
+                    found, _, _ = self.gui.check_any(
+                        ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                    )
+
                 if found:
                     min_lv = min_lv + 1
                     continue
@@ -98,9 +115,14 @@ class Barbarians(Task):
                 self.hold_pos_after_attack(self.bot.config.holdPosition)
 
                 # tap attack button
-                found, _, atk_btn_pos = self.gui.check_any(
-                    ImagePathAndProps.ATTACK_BUTTON_POS_IMAGE_PATH.value
-                )
+                if self.debug_mode:
+                    found, _, atk_btn_pos = self.debug_check_any(
+                        ImagePathAndProps.ATTACK_BUTTON_POS_IMAGE_PATH.value
+                    )
+                else:
+                    found, _, atk_btn_pos = self.gui.check_any(
+                        ImagePathAndProps.ATTACK_BUTTON_POS_IMAGE_PATH.value
+                    )
 
                 if not found or atk_btn_pos is None:
                     self.set_text(
@@ -118,11 +140,18 @@ class Barbarians(Task):
 
                 if not self.bot.config.holdPosition or is_in_city:
                     # tap on new troop
-                    has_new_troops_btn, _, new_troop_btn_pos = (
-                        self.gui.check_any(
-                            ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                    if self.debug_mode:
+                        has_new_troops_btn, _, new_troop_btn_pos = (
+                            self.debug_check_any(
+                                ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                            )
                         )
-                    )
+                    else:
+                        has_new_troops_btn, _, new_troop_btn_pos = (
+                            self.gui.check_any(
+                                ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                            )
+                        )
 
                     if not has_new_troops_btn or new_troop_btn_pos is None:
                         self.set_text(
@@ -141,17 +170,29 @@ class Barbarians(Task):
                     self.select_save_blue_one()
 
                     # start attack
-                    _, _, match_button_pos = self.gui.check_any(
-                        ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
-                    )
+                    if self.debug_mode:
+                        _, _, match_button_pos = self.debug_check_any(
+                            ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                        )
+                    else:
+                        _, _, match_button_pos = self.gui.check_any(
+                            ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                        )
+
                     super().set_text(insert="March")
                     x, y = match_button_pos
                     super().tap(x, y, 1)
 
                     if self.use_ap_recovery():
-                        _, _, match_button_pos = self.gui.check_any(
-                            ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
-                        )
+                        if self.debug_mode:
+                            _, _, match_button_pos = self.debug_check_any(
+                                ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                            )
+                        else:
+                            _, _, match_button_pos = self.gui.check_any(
+                                ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                            )
+
                         super().set_text(insert="March")
                         x, y = match_button_pos
                         super().tap(x, y, 1)
@@ -161,9 +202,14 @@ class Barbarians(Task):
 
                 else:
                     # find commander and tap it
-                    _, _, pos = self.gui.check_any(
-                        ImagePathAndProps.HOLD_ICON_IMAGE_PATH.value
-                    )
+                    if self.debug_mode:
+                        _, _, pos = self.debug_check_any(
+                            ImagePathAndProps.HOLD_ICON_IMAGE_PATH.value
+                        )
+                    else:
+                        _, _, pos = self.gui.check_any(
+                            ImagePathAndProps.HOLD_ICON_IMAGE_PATH.value
+                        )
 
                     if pos is None:
                         break
@@ -171,15 +217,27 @@ class Barbarians(Task):
                     super().tap(x - 10, y - 10, 2)
 
                     # tap on match button
-                    _, _, pos = self.gui.check_any(
-                        ImagePathAndProps.MARCH_BAR_IMAGE_PATH.value
-                    )
-                    x, y = pos
-                    super().tap(x, y, 1)
-                    if self.use_ap_recovery():
+                    if self.debug_mode:
+                        _, _, pos = self.debug_check_any(
+                            ImagePathAndProps.MARCH_BAR_IMAGE_PATH.value
+                        )
+                    else:
                         _, _, pos = self.gui.check_any(
                             ImagePathAndProps.MARCH_BAR_IMAGE_PATH.value
                         )
+
+                    x, y = pos
+                    super().tap(x, y, 1)
+                    if self.use_ap_recovery():
+                        if self.debug_mode:
+                            _, _, pos = self.debug_check_any(
+                                ImagePathAndProps.MARCH_BAR_IMAGE_PATH.value
+                            )
+                        else:
+                            _, _, pos = self.gui.check_any(
+                                ImagePathAndProps.MARCH_BAR_IMAGE_PATH.value
+                            )
+
                         x, y = pos
                         super().tap(x, y, 1)
 
@@ -214,9 +272,16 @@ class Barbarians(Task):
                 super().tap(x, y, 1)
                 x, y = center_pos
                 super().tap(x, y, 1)
-                _, _, pos = self.gui.check_any(
-                    ImagePathAndProps.RETURN_BUTTON_IMAGE_PATH.value
-                )
+
+                if self.debug_mode:
+                    _, _, pos = self.debug_check_any(
+                        ImagePathAndProps.RETURN_BUTTON_IMAGE_PATH.value
+                    )
+                else:
+                    _, _, pos = self.gui.check_any(
+                        ImagePathAndProps.RETURN_BUTTON_IMAGE_PATH.value
+                    )
+
                 if pos is not None:
                     x, y = pos
                     super().tap(x, y, 1)
@@ -225,6 +290,10 @@ class Barbarians(Task):
         except Exception as e:
             traceback.print_exc()
             return next_task
+
+        # Debug modunu devre dışı bırak
+        if self.debug_mode:
+            self.disable_debug()
 
         return next_task
 

@@ -1,3 +1,46 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+##############################################
+# Copyright (C) 2014 by codeskyblue
+# =============================================
+
+"""
+Some snippets of opencv2
+
+## Resize image
+ref: <http://docs.opencv.org/modules/imgproc/doc/geometric_transformations.html#void resize(InputArray src, OutputArray dst, Size dsize, double fx, double fy, int interpolation)>
+
+    # half width and height
+    small = cv2.resize(image, (0, 0), fx=0.5, fy=0.5)
+
+    # to fixed Size
+    small = cv2.resize(image, (100, 50))
+
+## Constant
+    1: cv2.IMREAD_COLOR
+    0: cv2.IMREAD_GRAYSCALE
+    -1: cv2.IMREAD_UNCHANGED
+
+## Show image
+    cv2.imshow('image title',img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+## Generate a blank image
+    size = (height, width, channels) = (512, 256, 3)
+    img = np.zeros(size, np.uint8)
+
+## Sort points
+    pts = [(0, 7), (3, 5), (2, 6)]
+
+    sorted(pts, key=lambda p: p[0]) # sort by point x row, expect [(0, 7), (2, 6), (3, 5)]
+
+## Crop image
+    croped = img[y0:y1, x0:x1]
+
+"""
+
 import cv2
 import numpy as np
 
@@ -30,20 +73,25 @@ DEBUG = False
 
 
 def show(img):
+    """显示一个图片"""
     cv2.imshow("image", img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
 def imread(filename):
-    try:
-        return cv2.imread(filename)
-    except Exception as e:
-        raise RuntimeError(f"Error reading file '{filename}': {e}")
+    """
+    Like cv2.imread
+    This function will make sure filename exists
+    """
+    im = cv2.imread(filename)
+    if im is None:
+        raise RuntimeError("file: '%s' not exists" % filename)
+    return im
 
 
 def find_template(
-    im_source, im_search, threshold=0.5, maxcnt=0, rgb=False, bgremove=False
+    im_source, im_search, threshold=0.5, rgb=False, bgremove=False
 ):
     """
     @return find location
@@ -108,11 +156,16 @@ def find_all_template(
             top_left = min_loc
         else:
             top_left = max_loc
+
+        # Zaokrąglenie max_val do najbliższego 0.1
+        max_val = round_to_nearest_tenth(max_val)
+
         if DEBUG:
             print(
                 "templmatch_value(thresh:%.1f) = %.3f" % (threshold, max_val)
-            )  # not show debug
-        if max_val < threshold:
+            )  # Debug output
+
+        if max_val < threshold - 0.1:
             break
         # calculator middle point
         middle_point = (top_left[0] + w / 2, top_left[1] + h / 2)
@@ -141,6 +194,10 @@ def find_all_template(
             flags=cv2.FLOODFILL_FIXED_RANGE,
         )
     return result
+
+
+def round_to_nearest_tenth(number):
+    return round(number * 10) / 10
 
 
 def _sift_instance(edge_threshold=100):
@@ -310,20 +367,22 @@ def brightness(im):
 
 
 def main():
+    print(cv2.IMREAD_COLOR)
+    print(cv2.IMREAD_GRAYSCALE)
+    print(cv2.IMREAD_UNCHANGED)
     imsrc = imread("testdata/1s.png")
     imsch = imread("testdata/1t.png")
+    print(brightness(imsrc))
+    print(brightness(imsch))
 
     pt = find(imsrc, imsch)
-    if pt:
-        print(f"Found at point: {pt}")
-    else:
-        print("Pattern not found.")
-
+    # mark_point(imsrc, pt)
+    # show(imsrc)
     imsrc = imread("testdata/2s.png")
     imsch = imread("testdata/2t.png")
     result = find_all_template(imsrc, imsch)
-    pts = [match["result"] for match in result]
-    print(f"Found at points: {pts}")
+    print(result)
+    pts = []
     for match in result:
         pt = match["result"]
         # mark_point(imsrc, pt)

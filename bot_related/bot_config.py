@@ -18,6 +18,11 @@ class BotConfig:
 
         self.action_wait_time = config.get("action_wait_time", 1)
 
+        # Debug modu
+        self.debug_mode = config.get(
+            "debug_mode", False
+        )  # Debug modu varsayılan olarak kapalı
+
         # Break
         self.enableBreak = config.get("enableBreak", True)
         self.breakTime = config.get("breakTime", 60 * 3)
@@ -102,7 +107,9 @@ class BotConfig:
         )
         self.gatherResourceRatioFood = config.get("gatherResourceRatioFood", 1)
         self.gatherResourceRatioWood = config.get("gatherResourceRatioWood", 1)
-        self.gatherResourceRatioStone = config.get("gatherResourceRatioStone", 1)
+        self.gatherResourceRatioStone = config.get(
+            "gatherResourceRatioStone", 1
+        )
         self.gatherResourceRatioGold = config.get("gatherResourceRatioGold", 1)
         self.holdOneQuerySpace = config.get("holdOneQuerySpace", False)
         self.gatherGem = config.get("gatherGem", True)

@@ -13,6 +13,7 @@ import numpy as np
 import cv2
 from bot_related import aircve as aircv
 import io
+import os
 
 
 # small percentage are more similar
@@ -182,7 +183,7 @@ class GuiDetector:
         return result
 
     def match_query_to_string(self):
-        x0, y0, x1, y1 = (1211, 162, 1242, 179)
+        x0, y0, x1, y1 = (1206, 132, 1249, 159)
 
         try:
             imsch = cv2.imdecode(
@@ -217,9 +218,15 @@ class GuiDetector:
             resource_image = Image.fromarray(imsch)
             str = img_to_string(resource_image)
             if self.debug:
-                cv2.imshow("imsch", imsch)
-                print(str)
-                cv2.waitKey(0)
+                # Görüntüyü kaydet (göstermek yerine)
+                debug_dir = "debug_images"
+                if not os.path.exists(debug_dir):
+                    os.makedirs(debug_dir)
+                timestamp = cv2.getTickCount()
+                cv2.imwrite(
+                    f"{debug_dir}/barbarians_level_{timestamp}.png", imsch
+                )
+                print(f"Debug: Barbarlar seviyesi: {str}")
             result = int("".join(c for c in str if c.isdigit()))
         except Exception as e:
             traceback.print_exc()
@@ -257,20 +264,9 @@ class GuiDetector:
             path, size, box, threshold, least_diff, gui = props
             imsrc = cv2.imread(resource_path(path))
             grimsrc = cv2.cvtColor(imsrc, cv2.COLOR_BGR2GRAY)
-            # cv2.imshow("dst", grimsrc)
-            # cv2.imshow("src", grimsch)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
+
             result = cv2.matchTemplate(grimsrc, grimsch, cv2.TM_CCOEFF_NORMED)
-            # while True:
-            #     loc = np.where(result >= threshold)
-            #     if len(loc[0]) == 0:
-            #         threshold = threshold - 0.05
-            #     else:
-            #         x, y = np.mean(loc[::-1], axis=1)
-            #         return True, gui, (x,y)
-            # _, max_val, _, max_loc = cv2.minMaxLoc(result)
-            # return True, gui, max_loc
+
             loc = np.where(result >= threshold)
             if len(loc[0]) == 0:
                 return False, None, None
@@ -293,25 +289,55 @@ class GuiDetector:
 
             imsrc = cv2.imread(resource_path(path))
             if imsrc is None:
-                print(f"Debug: Kaynak görüntü yüklenemedi: {path}")
+                print(f"Debug: Kaynak goruntu yuklenemedi: {path}")
                 continue
 
             result = aircv.find_template(imsrc, imsch, threshold, True)
 
             if self.debug:
-                print(f"Debug: Aranan görüntü: {path}")
-                print(f"Debug: Eşleşme eşiği: {threshold}")
+                print(f"Debug: Aranan goruntu: {path}")
+                print(f"Debug: Eslesme esigi: {threshold}")
                 if result is not None:
-                    print(f"Debug: Eşleşme bulundu - Konum: {result['result']}")
-                    print(f"Debug: Eşleşme güveni: {result['confidence']}")
+                    print(f"Debug: Eslesme bulundu - Konum: {result['result']}")
+                    print(f"Debug: Eslesme guveni: {result['confidence']}")
                 else:
-                    print("Debug: Eşleşme bulunamadı")
+                    print("Debug: Eslesme bulunamadi")
 
-                # Görüntüleri göster
-                cv2.imshow("Aranan Görüntü", imsrc)
-                cv2.imshow("Ekran Görüntüsü", imsch)
-                cv2.waitKey(0)
-                cv2.destroyAllWindows()
+                # Görüntüleri kaydet (göstermek yerine)
+                timestamp = cv2.getTickCount()
+                debug_dir = "debug_images"
+                if not os.path.exists(debug_dir):
+                    os.makedirs(debug_dir)
+
+                image_name = os.path.basename(path).split(".")[0]
+                cv2.imwrite(
+                    f"{debug_dir}/aranan_{image_name}_{timestamp}.png", imsrc
+                )
+                cv2.imwrite(
+                    f"{debug_dir}/ekran_{image_name}_{timestamp}.png", imsch
+                )
+
+                # Eşleşme varsa, eşleşen bölgeyi işaretle ve kaydet
+                if result is not None:
+                    match_img = imsch.copy()
+                    match_x, match_y = result["result"]
+                    h, w = imsrc.shape[:2]
+                    top_left = (int(match_x - w / 2), int(match_y - h / 2))
+                    bottom_right = (int(match_x + w / 2), int(match_y + h / 2))
+                    cv2.rectangle(
+                        match_img, top_left, bottom_right, (0, 255, 0), 2
+                    )
+                    cv2.circle(
+                        match_img,
+                        (int(match_x), int(match_y)),
+                        5,
+                        (0, 0, 255),
+                        -1,
+                    )
+                    cv2.imwrite(
+                        f"{debug_dir}/eslesme_{image_name}_{timestamp}.png",
+                        match_img,
+                    )
 
             if result is not None:
                 return True, gui, result["result"]

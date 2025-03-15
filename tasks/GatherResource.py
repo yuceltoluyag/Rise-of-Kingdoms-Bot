@@ -121,13 +121,22 @@ class GatherResource(Task):
         """
         try:
             # Doğrudan AllArmiesBusy1.png ve AllArmiesBusy2.png dosyalarını kullanarak kontrol et
-            check_result1 = self.gui.check_any(
-                ImagePathAndProps.ALL_ARMIES_BUSY_IMAGE_PATH1.value
-            )
+            if self.debug_mode:
+                check_result1 = self.debug_image_match(
+                    ImagePathAndProps.ALL_ARMIES_BUSY_IMAGE_PATH1.value
+                )
 
-            check_result2 = self.gui.check_any(
-                ImagePathAndProps.ALL_ARMIES_BUSY_IMAGE_PATH2.value
-            )
+                check_result2 = self.debug_image_match(
+                    ImagePathAndProps.ALL_ARMIES_BUSY_IMAGE_PATH2.value
+                )
+            else:
+                check_result1 = self.gui.check_any(
+                    ImagePathAndProps.ALL_ARMIES_BUSY_IMAGE_PATH1.value
+                )
+
+                check_result2 = self.gui.check_any(
+                    ImagePathAndProps.ALL_ARMIES_BUSY_IMAGE_PATH2.value
+                )
 
             # Debug için ekran görüntüsünü kaydet
             if check_result1[0] or check_result2[0]:
@@ -157,6 +166,11 @@ class GatherResource(Task):
         magnifier_pos = (60, 540)
         self.set_text(title="Gather Resource", remove=True)
         self.call_idle_back()
+
+        # Debug modunu etkinleştir (isteğe bağlı olarak kullanılabilir)
+        if self.bot.config.debug_mode:
+            self.enable_debug()
+            print("GatherResource görevi için debug modu etkinleştirildi")
 
         if self.bot.config.useGatheringBoosts:
             b_buff_props = BuffsImageAndProps.ENHANCED_GATHER_BLUE.value
@@ -208,15 +222,29 @@ class GatherResource(Task):
             x, y = magnifier_pos
             self.tap(x, y, 1)
             self.tap(chose_icon_pos[0], chose_icon_pos[1], 1)
-            search_pos = self.gui.check_any(
-                ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
-            )[2]
-            dec_pos = self.gui.check_any(
-                ImagePathAndProps.DECREASING_BUTTON_IMAGE_PATH.value
-            )[2]
-            inc_pos = self.gui.check_any(
-                ImagePathAndProps.INCREASING_BUTTON_IMAGE_PATH.value
-            )[2]
+
+            # Debug modunda check_any yerine debug_check_any kullan
+            if self.debug_mode:
+                found, _, search_pos = self.debug_check_any(
+                    ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                )
+                found, _, dec_pos = self.debug_check_any(
+                    ImagePathAndProps.DECREASING_BUTTON_IMAGE_PATH.value
+                )
+                found, _, inc_pos = self.debug_check_any(
+                    ImagePathAndProps.INCREASING_BUTTON_IMAGE_PATH.value
+                )
+            else:
+                search_pos = self.gui.check_any(
+                    ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                )[2]
+                dec_pos = self.gui.check_any(
+                    ImagePathAndProps.DECREASING_BUTTON_IMAGE_PATH.value
+                )[2]
+                inc_pos = self.gui.check_any(
+                    ImagePathAndProps.INCREASING_BUTTON_IMAGE_PATH.value
+                )[2]
+
             self.tap(inc_pos[0] - 33, inc_pos[1], 0.3)
 
             repeat_count = 0
@@ -244,9 +272,17 @@ class GatherResource(Task):
 
                 for j in range(5):
                     self.tap(search_pos[0], search_pos[1], 2)
-                    is_found, _, _ = self.gui.check_any(
-                        ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
-                    )
+
+                    # Debug modunda check_any yerine debug_check_any kullan
+                    if self.debug_mode:
+                        is_found, _, _ = self.debug_check_any(
+                            ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                        )
+                    else:
+                        is_found, _, _ = self.gui.check_any(
+                            ImagePathAndProps.RESOURCE_SEARCH_BUTTON_IMAGE_PATH.value
+                        )
+
                     if not is_found:
                         break
                     self.set_text(
@@ -279,9 +315,14 @@ class GatherResource(Task):
                     return next_task
 
                 # Önce normal yöntemle deneyelim
-                check_result = self.gui.check_any(
-                    ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
-                )
+                if self.debug_mode:
+                    check_result = self.debug_image_match(
+                        ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
+                    )
+                else:
+                    check_result = self.gui.check_any(
+                        ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
+                    )
 
                 # Eğer bulunamazsa, alternatif yöntem kullanarak GATHER butonunu bulmaya çalışalım
                 if not check_result[0]:
@@ -317,9 +358,14 @@ class GatherResource(Task):
                     self.save_debug_image("all_armies_busy")
                     return next_task
 
-                check_result = self.gui.check_any(
-                    ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
-                )
+                if self.debug_mode:
+                    check_result = self.debug_image_match(
+                        ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                    )
+                else:
+                    check_result = self.gui.check_any(
+                        ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                    )
 
                 # Eğer bulunamazsa, alternatif yöntem kullanarak NEW_TROOPS butonunu bulmaya çalışalım
                 if not check_result[0]:
@@ -373,9 +419,16 @@ class GatherResource(Task):
                 if self.bot.config.gatherResourceNoSecondaryCommander:
                     self.set_text(insert="Remove secondary commander")
                     self.tap(473, 462, 0.5)
-                match_button_pos = self.gui.check_any(
-                    ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
-                )[2]
+
+                if self.debug_mode:
+                    match_button_pos = self.debug_image_match(
+                        ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                    )[2]
+                else:
+                    match_button_pos = self.gui.check_any(
+                        ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                    )[2]
+
                 self.set_text(insert="March")
                 self.tap(match_button_pos[0], match_button_pos[1], 2)
                 repeat_count = 0
@@ -384,6 +437,11 @@ class GatherResource(Task):
         except Exception as e:
             traceback.print_exc()
             return next_task
+
+        # Debug modunu devre dışı bırak
+        if self.debug_mode:
+            self.disable_debug()
+
         return next_task
 
     def get_min_resource(self):

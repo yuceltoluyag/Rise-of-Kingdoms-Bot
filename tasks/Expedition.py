@@ -11,6 +11,11 @@ class Expedition(Task):
 
     def do(self, next_task=TaskName.MYSTERY_MERCHANT.value):
         self.set_text(title="Expedition")
+
+        # Debug modu kontrolü
+        if self.debug_mode:
+            print("Debug: Expedition gorevi baslatiliyor")
+
         self.back_to_home_gui()
         self.home_gui_full_view()
 
@@ -21,9 +26,19 @@ class Expedition(Task):
         # Add option to buy Constance, Aeth
         # Add option to buy legendary and epic sculptures
         # Add option to buy resources
-        found, _, pos = self.gui.check_any(
-            ImagePathAndProps.MERCHANT_ICON_IMAGE_PATH.value
-        )
+
+        # Debug modu aktifse debug_check_any kullan
+        if self.debug_mode:
+            found, _, pos = self.debug_check_any(
+                ImagePathAndProps.MERCHANT_ICON_IMAGE_PATH.value
+            )
+            if not found:
+                self.save_debug_image("expedition_merchant_icon_not_found")
+        else:
+            found, _, pos = self.gui.check_any(
+                ImagePathAndProps.MERCHANT_ICON_IMAGE_PATH.value
+            )
+
         if not found:
             self.set_text(insert="Mystery Merchant not found", index=0)
             return next_task
@@ -34,17 +49,35 @@ class Expedition(Task):
         while True:
             for i in range(5):
                 self.set_text(insert="buy item with food")
+
+                # Debug modu aktifse debug görüntüsü kaydet
+                if self.debug_mode:
+                    self.save_debug_image("expedition_before_find_food_buttons")
+
                 list = self.gui.find_all_image_props(
                     ImagePathAndProps.MERCHANT_BUY_WITH_FOOD_IMAGE_PATH.value
                 )
+
+                if self.debug_mode and not list:
+                    self.save_debug_image("expedition_food_buttons_not_found")
+
                 for buy_with_food_btn in list:
                     x, y = buy_with_food_btn["result"]
                     self.tap(x, y, 0.5)
 
                 self.set_text(insert="buy item with wood")
+
+                # Debug modu aktifse debug görüntüsü kaydet
+                if self.debug_mode:
+                    self.save_debug_image("expedition_before_find_wood_buttons")
+
                 list = self.gui.find_all_image_props(
                     ImagePathAndProps.MERCHANT_BUY_WITH_WOOD_IMAGE_PATH.value
                 )
+
+                if self.debug_mode and not list:
+                    self.save_debug_image("expedition_wood_buttons_not_found")
+
                 for buy_with_wood_btn in list:
                     x, y = buy_with_wood_btn["result"]
                     self.tap(x, y, 0.5)

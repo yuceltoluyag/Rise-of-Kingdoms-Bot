@@ -58,6 +58,12 @@ class GatherGem(Task):
     def do(self, next_task=TaskName.GATHER_GEM):
         magnifier_pos = (60, 540)
         self.set_text(title="Gather Gem", remove=True)
+
+        # Debug modu kontrolü
+        if self.debug_mode:
+            print("Debug: GatherGem gorevi baslatiliyor")
+            print("Debug: Magnifier pozisyonu:", magnifier_pos)
+
         # Start at any map location
         self.back_to_map_gui()
         last_resource_pos = []
@@ -65,9 +71,18 @@ class GatherGem(Task):
         try:
             while True:
                 # Check if gem mine exists on map
-                found, _, gempost = self.gui.check_any(
-                    ImagePathAndProps.GEM_IMG_PATH.value
-                )
+                # Debug modu aktifse debug_check_any kullan
+                if self.debug_mode:
+                    found, _, gempost = self.debug_check_any(
+                        ImagePathAndProps.GEM_IMG_PATH.value
+                    )
+                    if not found:
+                        self.save_debug_image("gem_not_found")
+                else:
+                    found, _, gempost = self.gui.check_any(
+                        ImagePathAndProps.GEM_IMG_PATH.value
+                    )
+
                 if found:
                     self.set_text(insert="Found gem pot")
                     # Tap on the gem mine
@@ -85,15 +100,37 @@ class GatherGem(Task):
                         # Save last node position, remember to reset the last resouse pos
                         last_resource_pos.append(new_resource_pos)
                     # Check if we can gather the node
-                    found, _, gather_button_pos = self.gui.check_any(
-                        ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
-                    )
+                    # Debug modu aktifse debug_check_any kullan
+                    if self.debug_mode:
+                        found, _, gather_button_pos = self.debug_check_any(
+                            ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
+                        )
+                        if not found:
+                            self.save_debug_image("gem_gather_button_not_found")
+                    else:
+                        found, _, gather_button_pos = self.gui.check_any(
+                            ImagePathAndProps.RESOURCE_GATHER_BUTTON_IMAGE_PATH.value
+                        )
+
                     if found:
                         # Yes, send the troop
                         self.tap(gather_button_pos[0], gather_button_pos[1], 2)
-                        pos = self.gui.check_any(
-                            ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
-                        )[2]
+
+                        # Debug modu aktifse debug_check_any kullan
+                        if self.debug_mode:
+                            result = self.debug_check_any(
+                                ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                            )
+                            if not result[0]:
+                                self.save_debug_image(
+                                    "gem_new_troops_button_not_found"
+                                )
+                            pos = result[2]
+                        else:
+                            pos = self.gui.check_any(
+                                ImagePathAndProps.NEW_TROOPS_BUTTON_IMAGE_PATH.value
+                            )[2]
+
                         if pos is None:
                             self.set_text(insert="Not more space for march")
                             return next_task
@@ -109,9 +146,21 @@ class GatherGem(Task):
                             self.set_text(insert="Remove secondary commander")
                             self.tap(473, 462, 0.5)
                         # Send match
-                        match_button_pos = self.gui.check_any(
-                            ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
-                        )[2]
+                        # Debug modu aktifse debug_check_any kullan
+                        if self.debug_mode:
+                            result = self.debug_check_any(
+                                ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                            )
+                            if not result[0]:
+                                self.save_debug_image(
+                                    "gem_troops_match_button_not_found"
+                                )
+                            match_button_pos = result[2]
+                        else:
+                            match_button_pos = self.gui.check_any(
+                                ImagePathAndProps.TROOPS_MATCH_BUTTON_IMAGE_PATH.value
+                            )[2]
+
                         self.set_text(insert="March")
                         self.tap(match_button_pos[0], match_button_pos[1], 2)
                     else:
@@ -130,9 +179,18 @@ class GatherGem(Task):
         return next_task
 
     def check_query_space(self):
-        found, _, _ = self.gui.check_any(
-            ImagePathAndProps.HAS_MATCH_QUERY_IMAGE_PATH.value
-        )
+        # Debug modu aktifse debug_check_any kullan
+        if self.debug_mode:
+            found, _, _ = self.debug_check_any(
+                ImagePathAndProps.HAS_MATCH_QUERY_IMAGE_PATH.value
+            )
+            if not found:
+                self.save_debug_image("gem_match_query_not_found")
+        else:
+            found, _, _ = self.gui.check_any(
+                ImagePathAndProps.HAS_MATCH_QUERY_IMAGE_PATH.value
+            )
+
         curr_q, max_q = self.gui.match_query_to_string()
         if curr_q is None:
             return self.max_query_space

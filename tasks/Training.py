@@ -14,6 +14,11 @@ class Training(Task):
     def do(self, next_task=TaskName.GATHER):
         super().set_text(title="Train and Upgrade Troops", remove=True)
         super().set_text(insert="Init view")
+
+        # Debug modu kontrolü
+        if self.debug_mode:
+            print("Debug: Training gorevi baslatiliyor")
+
         super().back_to_map_gui()
         super().back_to_home_gui()
         super().home_gui_full_view()
@@ -25,6 +30,9 @@ class Training(Task):
                 (930, 175),
                 (1030, 175),
             ]
+
+            if self.debug_mode:
+                print("Debug: Asker simge pozisyonları:", soldier_icon_pos)
 
             for config in [
                 [
@@ -59,18 +67,43 @@ class Training(Task):
                 super().set_text(
                     insert="Train or upgrade troops({})".format(config[4])
                 )
+                if self.debug_mode:
+                    print(f"Debug: {config[4]} eğitimi/yükseltmesi yapılıyor")
+
                 super().back_to_home_gui()
                 upgraded = False
                 x, y = config[3]
                 super().tap(x, y, 1)
-                _, _, pos = self.gui.check_any(config[0])
+
+                # Debug modu aktifse debug_check_any kullan
+                if self.debug_mode:
+                    _, _, pos = self.debug_check_any(config[0])
+                    if pos is None:
+                        self.save_debug_image(
+                            f"training_{config[4]}_button_not_found"
+                        )
+                else:
+                    _, _, pos = self.gui.check_any(config[0])
+
                 if pos is None:
                     continue
                 x, y = pos
                 super().tap(x, y, 1)
-                _, _, pos = self.gui.check_any(
-                    ImagePathAndProps.SPEED_UP_BUTTON_IMAGE_PATH.value
-                )
+
+                # Debug modu aktifse debug_check_any kullan
+                if self.debug_mode:
+                    _, _, pos = self.debug_check_any(
+                        ImagePathAndProps.SPEED_UP_BUTTON_IMAGE_PATH.value
+                    )
+                    if pos is not None:
+                        print(
+                            "Debug: Hızlandırma butonu bulundu, eğitim zaten devam ediyor"
+                        )
+                else:
+                    _, _, pos = self.gui.check_any(
+                        ImagePathAndProps.SPEED_UP_BUTTON_IMAGE_PATH.value
+                    )
+
                 if pos is not None:
                     continue
                 if config[2] != TrainingAndUpgradeLevel.DISABLED.value:
@@ -90,17 +123,27 @@ class Training(Task):
                         x, y = soldier_icon_pos[i]
                         super().tap(x, y, 0.5)
                         # check has upgrade button, if has then tap it
-                        _, _, pos = self.gui.check_any(
-                            ImagePathAndProps.TRAINING_UPGRADE_BUTTON_IMAGE_PATH.value
-                        )
-                        if pos is None:
-                            if (
-                                config[2]
-                                != TrainingAndUpgradeLevel.UPGRADE_ALL.value
-                            ):
-                                break
-                            else:
-                                continue
+                        # Debug modu aktifse debug_check_any kullan
+                        if self.debug_mode:
+                            _, _, pos = self.debug_check_any(
+                                ImagePathAndProps.TRAINING_UPGRADE_BUTTON_IMAGE_PATH.value
+                            )
+                            if pos is None:
+                                self.save_debug_image(
+                                    f"training_{config[4]}_upgrade_button_not_found_{i}"
+                                )
+                        else:
+                            _, _, pos = self.gui.check_any(
+                                ImagePathAndProps.TRAINING_UPGRADE_BUTTON_IMAGE_PATH.value
+                            )
+                            if pos is None:
+                                if (
+                                    config[2]
+                                    != TrainingAndUpgradeLevel.UPGRADE_ALL.value
+                                ):
+                                    break
+                                else:
+                                    continue
                         x, y = pos
                         super().set_text(
                             insert="Upgrade T{}({})".format(i + 1, config[4])
