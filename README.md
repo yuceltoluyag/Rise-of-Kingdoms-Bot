@@ -1,2 +1,2 @@
-No Longer Developed  https://github.com/yuceltoluyag/Rise-of-Kingdoms-Bot/issues/24
+No Longer Developed  https://yuceltoluyag.dev/veda-rise-of-kingdom-bot/
 
