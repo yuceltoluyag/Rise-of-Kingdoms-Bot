@@ -1,2 +1,2 @@
-No Longer Developed  https://yuceltoluyag.dev/veda-rise-of-kingdom-bot/
+No Longer Developed  https://yuceltoluyag.github.io/veda-rise-of-kingdom-bot/
 
